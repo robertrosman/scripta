@@ -1,0 +1,21 @@
+{
+  "name": "zse",
+  "version": "1.0.0",
+  "description": "zse script executor makes it easy and simple to create and run scripts for any kind of automation",
+  "main": "index.js",
+  "bin": {
+    "zse": "index.js"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "type": "module",
+  "author": "Robert Rosman",
+  "license": "ISC",
+  "dependencies": {
+    "change-case": "^4.1.2",
+    "commander": "^8.1.0",
+    "lodash": "^4.17.21",
+    "zx": "^3.1.0"
+  }
+}
