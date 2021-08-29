@@ -1,18 +1,14 @@
 
-export const options = [
+export const options = (store) => [
     {
         name: 'target',
         type: 'autocomplete',
         message: 'Who do you want to greet?',
+        choices: store.history,
         suggestOnly: true,
         validate: (val) => val && val.length > 0
     }
 ]
-
-export const interactiveOptions = (store, parsedOptions) => {
-    options.find(o => o.name === 'target').choices = store.history
-    return options
-}
 
 export const store = {
     history: []

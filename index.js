@@ -9,7 +9,6 @@ import { __dirname, getFilesRecursively } from './lib/utils.js'
 (async () => {
     const program = new Command();
     const availableScripts = {};
-    const context = {}
 
     try {
         const scriptsPath = path.join(__dirname, 'scripts')
@@ -17,9 +16,10 @@ import { __dirname, getFilesRecursively } from './lib/utils.js'
         for (const file of files) {
             const name = file.replace(/\.\w+$/, '')
             const command = program.command(name)
-            const script = await import(path.join(scriptsPath, file))
-            addOptions(script.options ?? [], command)
-            availableScripts[name] = createScriptCallback(name, script, context)
+            const importedScript = await import(path.join(scriptsPath, file))
+            const script = await setupScript(name, importedScript)
+            addOptions(script.optionsArray ?? [], command)
+            availableScripts[name] = createScriptCallback(name, script)
             command.action(availableScripts[name]);
         }
         program.exitOverride();
@@ -40,23 +40,37 @@ import { __dirname, getFilesRecursively } from './lib/utils.js'
 
 })()
 
-const createScriptCallback = (name, script, context) => 
+const setupScript = async (name, importedScript) => {
+    const script = { 
+        context: {},
+        ...importedScript
+    }
+    await setupStore(name, script)
+    script.optionsArray = (typeof script.options === 'function')
+        ? script.options(script.context.store)
+        : script.options ?? []
+    return script
+}
+
+const setupStore = async (name, script) => {
+    script.storeInstance = createStore(name, script.store ?? {})
+    script.context.store = await script.storeInstance.get()
+}
+
+const createScriptCallback = (name, script) => 
     async (parsedOptions) => {
-        // TODO: print command with arguments for automation
-        const store = createStore(name, script.store ?? {})
-        const storeData = await store.get()
-        context.store = storeData
-        parsedOptions = await resolveOptions(script, parsedOptions, storeData)
-        const commandArguments = generateCommandArguments(script.options, parsedOptions)
+        parsedOptions = await resolveOptions(script, parsedOptions)
+        const commandArguments = generateCommandArguments(script.optionsArray, parsedOptions)
         console.log(`zse ${name} ${commandArguments}\n`)
-        await script.run(parsedOptions, context)
-        await store.set(storeData)
+        await script.run(parsedOptions, script.context)
+        await script.storeInstance.set(script.context.store)
     }
 
-const resolveOptions = async (script, parsedOptions, store) => {
-    let options = script.interactiveOptions !== undefined
-        ? script.interactiveOptions(store, parsedOptions)
-        : script.options 
+const resolveOptions = async (script, parsedOptions) => {
+    const store = script.context.store
+    if (typeof script.options === 'function')
+        script.optionsArray = script.options(store, parsedOptions)
+    const options = script.optionsArray
 
     const setupOnceOptions = options?.filter(o => o.setupOnce === true)
     setupOnceOptions?.filter(soo => store[soo.name] !== undefined).forEach(soo => {
