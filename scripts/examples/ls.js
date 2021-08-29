@@ -1,4 +1,4 @@
 export const run = async (_) => {
-    cd(`..`)
-    await $`ls -a`
+  cd('..')
+  await $`ls -a`
 }
