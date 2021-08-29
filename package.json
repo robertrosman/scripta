@@ -1,7 +1,7 @@
 {
   "name": "zse",
   "version": "1.0.0",
-  "description": "zse script executor makes it easy and simple to create and run scripts for any kind of automation",
+  "description": "zse script executor makes it easy to create and run scripts for any kind of automation",
   "main": "index.js",
   "bin": {
     "zse": "index.js"
