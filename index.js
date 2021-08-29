@@ -2,8 +2,9 @@
 import { Command } from 'commander'
 import * as zx from 'zx'
 import path from 'path'
-import { addOptions, generateCommandArguments, interactiveFallback } from '../zop-options-parser/lib/resolve-options.js'
+import { addOptions, generateCommandArguments, interactiveFallback } from './lib/resolve-options.js'
 import { createStore } from './lib/store.js'
+import { Script } from './lib/Script.js'
 import { __dirname, getFilesRecursively } from './lib/utils.js'
 
 (async () => {
@@ -37,10 +38,7 @@ import { __dirname, getFilesRecursively } from './lib/utils.js'
 })()
 
 const setupScript = async (name, importedScript) => {
-  const script = {
-    context: {},
-    ...importedScript
-  }
+  const script = new Script(importedScript)
   await setupStore(name, script)
   script.optionsArray = (typeof script.options === 'function')
     ? script.options(script.context.store)
