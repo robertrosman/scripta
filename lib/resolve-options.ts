@@ -1,13 +1,12 @@
 import { Command, Option } from 'commander'
-import inquirer from 'inquirer'
+import * as inquirer from 'inquirer'
 import InquirerAutocompletePrompt from 'inquirer-autocomplete-prompt'
 inquirer.registerPrompt('autocomplete', InquirerAutocompletePrompt)
 import { paramCase } from 'change-case'
-import fuzzy from 'fuzzy'
+import * as fuzzy from 'fuzzy'
 
-const resolveOptions = async (argv, options, sources) => {
+const resolveOptions = async (argv = [], options = null, sources = []) => {
   const program = new Command()
-  argv = argv ?? []
   options = typeof options === 'function' ? options(...sources) : options
   options = options ?? []
   program.exitOverride()

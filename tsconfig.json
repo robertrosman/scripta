@@ -1,0 +1,12 @@
+{
+  "compilerOptions": {
+    "outDir": "./build",
+    "allowJs": true,
+    "target": "es2020",
+    "module": "es2020",
+    "moduleResolution": "Node",
+    "esModuleInterop": true,
+    "lib": ["ES5", "ES6"]
+  },
+  "include": ["./lib/**/*"]
+}

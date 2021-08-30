@@ -1,4 +1,4 @@
-import { stringArgv } from 'string-argv'
+import stringArgv from 'string-argv'
 import { resolveOptions, generateCommandArguments } from '../lib/resolve-options'
 import mockInquirer from 'mock-inquirer'
 
