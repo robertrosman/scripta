@@ -6,11 +6,7 @@ import { createStore } from './store.js'
 import { Script } from './Script.js'
 import { getFilesRecursively, __dirname } from './utils.js'
 
-// (async () => {
-//   await runApp()
-// })()
-
-export const runApp = async () => {
+(async () => {
   const program = new Command()
   const availableScripts = {}
 
@@ -38,7 +34,7 @@ export const runApp = async () => {
       console.error(err)
     }
   }
-}
+})()
 
 const setupScript = async (name, importedScript) => {
   const script = new Script(importedScript, { ...zx })

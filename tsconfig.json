@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "outDir": "./build",
+    "outDir": "dist/build",
     "allowJs": true,
     "allowSyntheticDefaultImports": true,
     "lib": ["ES2020"],

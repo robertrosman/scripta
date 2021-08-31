@@ -2,12 +2,12 @@
   "name": "zse",
   "version": "1.0.0",
   "description": "zse script executor makes it easy to create and run scripts for any kind of automation",
-  "main": "index.js",
+  "main": "build/cli.js",
   "bin": {
-    "zse": "index.js"
+    "zse": "build/cli.js"
   },
   "scripts": {
-    "build": "tsc",
+    "build": "rollup -c",
     "build:watch": "tsc --watch",
     "test": "jest",
     "test:watch": "jest --watch",
@@ -32,11 +32,15 @@
     "@babel/plugin-transform-modules-commonjs": "^7.15.0",
     "@babel/preset-env": "^7.15.0",
     "@babel/preset-typescript": "^7.15.0",
+    "@rollup/plugin-commonjs": "^20.0.0",
+    "@rollup/plugin-typescript": "^8.2.5",
     "@types/jest": "^27.0.1",
     "@types/node": "^16.7.6",
     "babel-jest": "^27.1.0",
     "jest": "^27.0.0",
     "mock-inquirer": "^1.0.3",
+    "rollup": "^2.56.3",
+    "rollup-plugin-uglify": "^6.0.4",
     "standard": "^16.0.3",
     "string-argv": "^0.3.1",
     "ts-jest": "^27.0.5",
