@@ -7,8 +7,8 @@ export class Script {
     run: (options, context) => {}
     store: object
 
-    constructor(scriptDefinition) {
-        this.context = {}
+    constructor(scriptDefinition, context) {
+        this.context = context
         this.optionsArray = []
         this.storeInstance = null
         this.options = scriptDefinition.options

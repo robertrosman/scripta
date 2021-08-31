@@ -1,7 +1,9 @@
+// Hack to include __dirname in modules
+import { fileURLToPath } from 'url';
 import path from 'path';
 import fs from 'fs';
-// export const __filename = fileURLToPath(import.meta.url)
-// export const __dirname = path.resolve(path.dirname(__filename), '..')
+export const __filename = fileURLToPath(import.meta.url);
+export const __dirname = path.resolve(path.dirname(__filename), '..');
 export const getFilesRecursively = (basePath, relativePath) => {
     relativePath = relativePath || '';
     const files = [];

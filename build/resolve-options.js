@@ -1,9 +1,9 @@
 import { Command, Option } from 'commander';
-import * as inquirer from 'inquirer';
+import inquirer from 'inquirer';
 import InquirerAutocompletePrompt from 'inquirer-autocomplete-prompt';
 inquirer.registerPrompt('autocomplete', InquirerAutocompletePrompt);
 import { paramCase } from 'change-case';
-import * as fuzzy from 'fuzzy';
+import fuzzy from 'fuzzy';
 const resolveOptions = async (argv = [], options = null, sources = []) => {
     const program = new Command();
     options = typeof options === 'function' ? options(...sources) : options;

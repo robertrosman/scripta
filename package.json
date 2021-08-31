@@ -11,6 +11,7 @@
     "build:watch": "tsc --watch",
     "test": "jest",
     "test:watch": "jest --watch",
+    "test:clear": "jest --clearCache",
     "lint": "standard",
     "lint:fix": "standard --fix"
   },
@@ -34,7 +35,7 @@
     "@types/jest": "^27.0.1",
     "@types/node": "^16.7.6",
     "babel-jest": "^27.1.0",
-    "jest": "^27.1.0",
+    "jest": "^27.0.0",
     "mock-inquirer": "^1.0.3",
     "standard": "^16.0.3",
     "string-argv": "^0.3.1",
