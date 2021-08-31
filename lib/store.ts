@@ -3,6 +3,11 @@ import path from 'path'
 import _ from 'lodash'
 import { __dirname } from './utils.js'
 
+export interface Store {
+  get(): object;
+  set(data: object): void;
+}
+
 const storeFilename = 'store.json'
 const filename = path.join(__dirname, storeFilename)
 
@@ -25,7 +30,7 @@ const saveStore = async (data) => {
   await fs.writeFile(filename, json, { encoding: 'utf8' })
 }
 
-export const createStore = (name, defaults) => ({
+export const createStore = (name, defaults): Store => ({
   get: async () => {
     const data = await readStore()
     return _.merge(defaults, data[name])
