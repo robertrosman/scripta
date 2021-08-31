@@ -3,7 +3,7 @@ import { Store } from "./store";
 
 interface ScriptDefinition {
     options?: OptionDefinition[] | OptionDefinitionGenerator;
-    store?: object;
+    store?: StoreDefinition;
     run?(options: OptionDefinition[], context: Context): void;
 }
 
@@ -13,8 +13,10 @@ interface OptionDefinition extends inquirer.Question {
 }
 
 interface Context {
-    store?: object;
+    store?: StoreDefinition;
 }
+
+type StoreDefinition = object;
 
 type OptionDefinitionGenerator = (store: object, parsedOptions?: object) => [OptionDefinition];
 
@@ -25,7 +27,7 @@ export class Script {
     optionsArray: OptionDefinition[];
     storeInstance: Store;
     run: (options: OptionDefinition[], context: Context) => void;
-    store: object
+    store: StoreDefinition;
 
     constructor(scriptDefinition: ScriptDefinition = {}, context = {}) {
         this.context = context
