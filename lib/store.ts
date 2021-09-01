@@ -1,12 +1,7 @@
-import fs from 'fs/promises'
+import { promises as fs } from 'fs'
 import path from 'path'
 import _ from 'lodash'
 import { __dirname } from './utils.js'
-
-export interface Store {
-  get(): object;
-  set(data: object): void;
-}
 
 const storeFilename = 'store.json'
 const filename = path.join(__dirname, storeFilename)
@@ -41,3 +36,12 @@ export const createStore = (name, defaults): Store => ({
     await saveStore(data)
   }
 })
+
+export class Store {
+  // get(): object;
+  // set(data: object): void;
+  static get(name: string, defaults: object) {
+    return { testData: true }
+  }
+
+}

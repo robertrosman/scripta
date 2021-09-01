@@ -6,6 +6,9 @@ export default {
   // coverageDirectory: './coverage',
   // coveragePathIgnorePatterns: ['node_modules', 'src/database', 'src/test', 'src/types'],
   // reporters: ['default', 'jest-junit'],
+  moduleNameMapper: {
+    '^\./(.*).js$': './$1'
+  },
   globals: { 
     'ts-jest': { 
       "tsconfig": "tsconfig.test.json"

@@ -2,7 +2,7 @@ import { Command } from 'commander'
 import * as zx from 'zx'
 import path from 'path'
 import { addOptions, generateCommandArguments, interactiveFallback } from './resolve-options.js'
-import { createStore } from './store.js'
+import { createStore } from './Store.js'
 import { Script } from './Script.js'
 import { getFilesRecursively, __dirname } from './utils.js'
 
@@ -37,7 +37,7 @@ import { getFilesRecursively, __dirname } from './utils.js'
 })()
 
 const setupScript = async (name, importedScript) => {
-  const script = new Script(importedScript, { ...zx })
+  const script = new Script(importedScript, { ...zx, __dirname })
   await setupStore(name, script)
   script.optionsArray = (typeof script.options === 'function')
     ? script.options(script.context.store)

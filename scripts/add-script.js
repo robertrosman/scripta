@@ -2,7 +2,6 @@ import fs from 'fs/promises'
 import { constants } from 'fs'
 import path from 'path'
 import { paramCase } from 'change-case'
-import { __dirname } from '../lib/utils.js'
 
 export const options = [
   {
@@ -19,7 +18,7 @@ export const options = [
   }
 ]
 
-export const run = async ({ name, editor }) => {
+export const run = async ({ name, editor }, { __dirname }) => {
   const filename = `${paramCase(name)}.js`
   const source = path.join(__dirname, 'lib', 'boilerplate.js')
   const destination = path.join(__dirname, 'scripts', filename)

@@ -1,5 +1,5 @@
 import inquirer from "inquirer";
-import { Store } from "./store";
+import { Store } from "./Store.js";
 
 interface ScriptDefinition {
     options?: OptionDefinition[] | OptionDefinitionGenerator;
