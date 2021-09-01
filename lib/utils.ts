@@ -1,7 +1,8 @@
 import path from 'path'
 import fs from 'fs'
+import dirname from 'es-dirname'
 
-export const __dirname = path.resolve()
+export const __dirname = path.join(dirname(), '..', '..')
 
 export const getFilesRecursively = (basePath: string, relativePath?: string) => {
   relativePath = relativePath || ''
