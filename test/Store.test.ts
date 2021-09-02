@@ -1,9 +1,9 @@
 import { Store } from '../lib/Store'
 
-import { promises as fs } from 'fs';
+import fs from 'fs';
 let fsMockData: any = {}
 
-let fsSpy = { readFile: null, writeFile: null};
+let fsSpy = { readFileSync: null, writeFileSync: null};
 
 describe('Store', () => {
     beforeEach(() => {
@@ -13,18 +13,19 @@ describe('Store', () => {
                 testData: true
             }
         }
-        fsSpy.readFile = jest.spyOn(fs, 'readFile').mockImplementation(async () => JSON.stringify(fsMockData))
-        fsSpy.writeFile = jest.spyOn(fs, 'writeFile').mockImplementation(async (filename, data) => { fsMockData = JSON.parse(data.toString()); })
+        Store.cache = Object.assign({}, fsMockData)
+        fsSpy.readFileSync = jest.spyOn(fs, 'readFileSync').mockImplementation(() => JSON.stringify(fsMockData))
+        fsSpy.writeFileSync = jest.spyOn(fs, 'writeFileSync').mockImplementation((filename, data) => { fsMockData = JSON.parse(data.toString()); })
     });
 
-    test('get returns correct data', async () => {
-        const data = await Store.read('test')
+    test('read returns correct data', async () => {
+        const data = Store.read('test')
 
         expect(data).toEqual(fsMockData.test)
     })
 
-    test('set saves correct data', async () => {
-        await Store.write('test', { newProp: true })
+    test('write saves correct data', async () => {
+        Store.write('test', { newProp: true })
 
         expect(fsMockData.test.newProp).toEqual(true)
     })
@@ -37,9 +38,19 @@ describe('Store', () => {
                 }
             }
         }
-        const data = await Store.read('test', defaults)
+        const data = Store.read('test', defaults)
 
         expect(Array.isArray(data.some.valid.dataStructure)).toBe(true)
         expect(data.testData).toEqual(true)
+    })
+
+    test('cache store data to avoid multiple disk reads', async () => {
+        Store.cache = undefined
+        Store.read('test')
+        Store.read('test')
+        Store.read('test')
+        Store.read('test')
+
+        expect(fsSpy.readFileSync).toHaveBeenCalledTimes(1)
     })
 })

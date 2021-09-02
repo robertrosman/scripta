@@ -1,4 +1,4 @@
-import { promises as fs } from 'fs'
+import fs from 'fs'
 import path from 'path'
 import _ from 'lodash'
 import { __dirname } from './utils.js'
@@ -6,46 +6,51 @@ import { __dirname } from './utils.js'
 const storeFilename = 'store.json'
 const filename = path.join(__dirname, storeFilename)
 
-const readStore = async () => {
+const readStore = () => {
   try {
-    const json = await fs.readFile(filename, { encoding: 'utf8' })
+    const json = fs.readFileSync(filename, { encoding: 'utf8' })
     return JSON.parse(json)
   } catch (err) {
     if (err.code === 'ENOENT') {
-      await saveStore({})
-      return await readStore()
+      saveStore({})
+      return readStore()
     } else {
       throw err
     }
   }
 }
 
-const saveStore = async (data) => {
+const saveStore = (data) => {
   const json = JSON.stringify(data)
-  await fs.writeFile(filename, json, { encoding: 'utf8' })
+  fs.writeFileSync(filename, json, { encoding: 'utf8' })
 }
 
-export const createStore = (name, defaults) => ({
-  get: async () => {
-    const data = await readStore()
-    return _.merge(defaults, data[name])
-  },
-  set: async (inputData) => {
-    const data = await readStore()
-    data[name] = inputData
-    await saveStore(data)
-  }
-})
-
 export class Store {
-  static async read(name: string, defaults: object = {}) {
-    const store = createStore(name, defaults)
-    return await store.get()
+  private static _cache: object
+
+  static get cache() {
+    if (!this._cache) {
+      this._cache = readStore()
+    }
+    return this._cache
   }
 
-  static async write(name: string, data: object) {
-    const store = createStore(name, {})
-    return await store.set(data)
+  static set cache(value) {
+    this._cache = value
+    if (!!value) {
+      saveStore(this._cache)
+    }
+  }
+
+  static read(name: string, defaults: object = {}) {
+    const data = Object.assign({}, this.cache)
+    return _.merge(defaults, data[name])
+  }
+
+  static write(name: string, data: object) {
+    const storeData = readStore()
+    storeData[name] = data
+    this.cache = storeData
   }
 
 }

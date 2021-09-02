@@ -2,7 +2,7 @@ import { Command } from 'commander'
 import * as zx from 'zx'
 import path from 'path'
 import { addOptions, generateCommandArguments, interactiveFallback } from './resolve-options.js'
-import { createStore } from './Store.js'
+import { Store } from './Store.js'
 import { Script } from './Script.js'
 import { getFilesRecursively, __dirname } from './utils.js'
 
@@ -46,8 +46,7 @@ const setupScript = async (name, importedScript) => {
 }
 
 const setupStore = async (name, script) => {
-  script.storeInstance = createStore(name, script.store ?? {})
-  script.context.store = await script.storeInstance.get()
+  script.context.store = Store.read(name, script.store)
 }
 
 const createScriptCallback = (name, script) =>
@@ -56,7 +55,7 @@ const createScriptCallback = (name, script) =>
     const commandArguments = generateCommandArguments(script.optionsArray, parsedOptions)
     console.log(`zse ${name} ${commandArguments}\n`)
     await script.run(parsedOptions, script.context)
-    await script.storeInstance.set(script.context.store)
+    await Store.write(name, script.context.store)
   }
 
 const resolveOptions = async (script, parsedOptions) => {
