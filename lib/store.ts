@@ -25,7 +25,7 @@ const saveStore = async (data) => {
   await fs.writeFile(filename, json, { encoding: 'utf8' })
 }
 
-export const createStore = (name, defaults): Store => ({
+export const createStore = (name, defaults) => ({
   get: async () => {
     const data = await readStore()
     return _.merge(defaults, data[name])
@@ -38,10 +38,14 @@ export const createStore = (name, defaults): Store => ({
 })
 
 export class Store {
-  // get(): object;
-  // set(data: object): void;
-  static get(name: string, defaults: object) {
-    return { testData: true }
+  static async read(name: string, defaults: object = {}) {
+    const store = createStore(name, defaults)
+    return await store.get()
+  }
+
+  static async write(name: string, data: object) {
+    const store = createStore(name, {})
+    return await store.set(data)
   }
 
 }
