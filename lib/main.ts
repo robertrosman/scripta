@@ -19,7 +19,7 @@ import { getFilesRecursively, __dirname } from './utils.js'
       const importedScript = await import(path.join(scriptsPath, file))
       const script = await setupScript(name, importedScript)
       addOptions(script.optionsArray ?? [], command)
-      availableScripts[name] = createScriptCallback(name, script)
+      availableScripts[name] = createScriptCallback(script)
       command.action(availableScripts[name])
     }
     program.exitOverride()
@@ -37,25 +37,16 @@ import { getFilesRecursively, __dirname } from './utils.js'
 })()
 
 const setupScript = async (name, importedScript) => {
-  const script = new Script(importedScript, { ...zx, __dirname })
-  await setupStore(name, script)
-  script.optionsArray = (typeof script.options === 'function')
-    ? script.options(script.context.store)
-    : script.options ?? []
-  return script
+  return new Script({ name, ...importedScript }, { ...zx, __dirname })
 }
 
-const setupStore = async (name, script) => {
-  script.context.store = Store.read(name, script.store)
-}
-
-const createScriptCallback = (name, script) =>
+const createScriptCallback = (script) =>
   async (parsedOptions) => {
     parsedOptions = await resolveOptions(script, parsedOptions)
     const commandArguments = generateCommandArguments(script.optionsArray, parsedOptions)
-    console.log(`zse ${name} ${commandArguments}\n`)
+    console.log(`zse ${script.name} ${commandArguments}\n`)
     await script.run(parsedOptions, script.context)
-    await Store.write(name, script.context.store)
+    await Store.write(script.name, script.context.store)
   }
 
 const resolveOptions = async (script, parsedOptions) => {
