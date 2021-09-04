@@ -1,10 +1,11 @@
 import { Command } from 'commander'
 import * as zx from 'zx'
 import path from 'path'
-import { addOptions, generateCommandArguments, interactiveFallback } from './resolve-options.js'
+import { interactiveFallback } from './resolve-options.js'
 import { Store } from './Store.js'
 import { Script } from './Script.js'
 import { getFilesRecursively, __dirname } from './utils.js'
+import { ArgumentParser } from './ArgumentParser.js'
 
 (async () => {
   const program = new Command()
@@ -13,14 +14,13 @@ import { getFilesRecursively, __dirname } from './utils.js'
   try {
     const scriptsPath = path.join(__dirname, 'scripts')
     const files = getFilesRecursively(scriptsPath)
+    const argumentParser = new ArgumentParser()
     for (const file of files) {
       const name = file.replace(/\.\w+$/, '')
-      const command = program.command(name)
       const importedScript = await import(path.join(scriptsPath, file))
       const script = await setupScript(name, importedScript)
-      addOptions(script.optionsArray ?? [], command)
       availableScripts[name] = createScriptCallback(script)
-      command.action(availableScripts[name])
+      argumentParser.registerScript(script, program, availableScripts[name])
     }
     program.exitOverride()
     program.parse()
@@ -43,7 +43,7 @@ const setupScript = async (name, importedScript) => {
 const createScriptCallback = (script) =>
   async (parsedOptions) => {
     parsedOptions = await resolveOptions(script, parsedOptions)
-    const commandArguments = generateCommandArguments(script.optionsArray, parsedOptions)
+    const commandArguments = new ArgumentParser().generateCommandCall(script.optionsArray, parsedOptions)
     console.log(`zse ${script.name} ${commandArguments}\n`)
     await script.run(parsedOptions, script.context)
     await Store.write(script.name, script.context.store)

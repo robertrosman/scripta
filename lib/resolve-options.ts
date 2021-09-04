@@ -1,39 +1,22 @@
-import { Command, Option } from 'commander'
 import inquirer from 'inquirer'
 import InquirerAutocompletePrompt from 'inquirer-autocomplete-prompt'
 inquirer.registerPrompt('autocomplete', InquirerAutocompletePrompt)
-import { paramCase } from 'change-case'
 import fuzzy from 'fuzzy'
+import { ArgumentParser } from './ArgumentParser.js'
+import { Script } from './Script.js'
 
-const resolveOptions = async (argv = [], options = null, sources = []) => {
-  const program = new Command()
-  options = typeof options === 'function' ? options(...sources) : options
-  options = options ?? []
-  program.exitOverride()
-  addOptions(options, program)
+const resolveOptions = async (argv = [], options = null, store?) => {
+  const parser = new ArgumentParser()
+  const script = new Script({ options, store })
+  parser.registerScript(script)
   try {
-    program.parse(argv)
-    const parsedOptions = program.opts()
-    const completeOptions = await interactiveFallback(options, parsedOptions)
+    const parsedOptions = parser.parse(argv)
+    const completeOptions = await interactiveFallback(script.optionsArray, parsedOptions)
     return completeOptions
   } catch (err) {
     if (err.code === 'commander.helpDisplayed') process.exit()
     throw err
   }
-}
-
-const addOptions = (options, program) => {
-  options.forEach(o => program.addOption(generateOption(o)))
-}
-
-const generateOption = (option) => {
-  let optionString = ''
-  if (option.shorthand) optionString += `-${option.shorthand}, `
-  optionString += `--${paramCase(option.name)}`
-  if (wantValue(option)) optionString += ` <${option.value ?? 'value'}>`
-  const newOption = new Option(optionString, option.message)
-  if (option.choices) newOption.choices(option.choices)
-  return newOption
 }
 
 const interactiveFallback = async (options, parsedOptions) => {
@@ -45,24 +28,7 @@ const interactiveFallback = async (options, parsedOptions) => {
   return Object.assign({}, parsedOptions, answers)
 }
 
-const generateCommandArguments = (options, parsedOptions) => {
-  const args = []
-  options?.forEach(o => {
-    if (o.type === 'confirm' && parsedOptions[o.name] === true) {
-      args.push(`--${paramCase(o.name)}`)
-    } else if (wantValue(o) && parsedOptions[o.name] !== undefined) {
-      const value = JSON.stringify(parsedOptions[o.name])
-      args.push(`--${paramCase(o.name)} ${value}`)
-    }
-  })
-  return args.join(' ')
-}
-
-const wantValue = (option) => ['input', 'list', 'rawList', 'password', 'autocomplete'].includes(option.type)
-
 export {
   resolveOptions,
-  addOptions,
-  interactiveFallback,
-  generateCommandArguments
+  interactiveFallback
 }
