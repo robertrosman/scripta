@@ -1,4 +1,3 @@
-import { Command } from 'commander'
 import * as zx from 'zx'
 import path from 'path'
 import { interactiveFallback } from './resolve-options.js'
@@ -8,7 +7,6 @@ import { getFilesRecursively, __dirname } from './utils.js'
 import { ArgumentParser } from './ArgumentParser.js'
 
 (async () => {
-  const program = new Command()
   const availableScripts = {}
 
   try {
@@ -20,10 +18,9 @@ import { ArgumentParser } from './ArgumentParser.js'
       const importedScript = await import(path.join(scriptsPath, file))
       const script = await setupScript(name, importedScript)
       availableScripts[name] = createScriptCallback(script)
-      argumentParser.registerScript(script, program, availableScripts[name])
+      argumentParser.registerScript(script, availableScripts[name])
     }
-    program.exitOverride()
-    program.parse()
+    argumentParser.parse(process.argv)
   } catch (err) {
     if (err.code === 'commander.helpDisplayed') {
       process.exit(0)

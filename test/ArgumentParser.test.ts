@@ -4,9 +4,9 @@ import { Script } from '../lib/Script'
 
 const mockArgv = (args) => stringArgv(args, 'node', 'resolve-options.test.js')
 
-const parseOptions = (argv, options, store?, callback?) => {
+const parseOptions = (argv, options) => {
   const parser = new ArgumentParser()
-  parser.registerScript(new Script({ options, store }), null, callback)
+  parser.addOptions(options)
   return parser.parse(argv)
 }
 
@@ -60,31 +60,18 @@ describe('ArgumentRegistrator', () => {
     expect(options.hello).toBe('world')
   })
 
-  test('calls options callback if it is a function', async () => {
-    const argv = mockArgv('--hello=world')
-    const optionsCallback = (store, parsedOptions) => [
-      {
-        name: store.name,
-        type: 'input'
-      }
-    ]
-    const store = {
-      name: 'hello'
-    }
-
-    const options = parseOptions(argv, optionsCallback, store)
-
-    expect(options.hello).toBe('world')
-  })
-
   test('parse runs callback if given', async () => {
-    const argv = mockArgv('--test')
+    const argv = mockArgv('test --test')
     const callback = jest.fn()
+    const parser = new ArgumentParser()
+    parser.registerScript(new Script({
+      options: [{
+        name: 'test',
+        message: 'some basic bool flag'
+      }]
+    }), callback)
 
-    const options = parseOptions(argv, [{
-      name: 'test',
-      message: 'some basic bool flag'
-    }], null, callback)
+    parser.parse(argv)
 
     expect(callback).toHaveBeenCalledTimes(1)
   })

@@ -5,13 +5,12 @@ import fuzzy from 'fuzzy'
 import { ArgumentParser } from './ArgumentParser.js'
 import { Script } from './Script.js'
 
-const resolveOptions = async (argv = [], options = null, store?) => {
+const resolveOptions = async (argv = [], options = null) => {
   const parser = new ArgumentParser()
-  const script = new Script({ options, store })
-  parser.registerScript(script)
+  parser.addOptions(options)
   try {
     const parsedOptions = parser.parse(argv)
-    const completeOptions = await interactiveFallback(script.optionsArray, parsedOptions)
+    const completeOptions = await interactiveFallback(options, parsedOptions)
     return completeOptions
   } catch (err) {
     if (err.code === 'commander.helpDisplayed') process.exit()

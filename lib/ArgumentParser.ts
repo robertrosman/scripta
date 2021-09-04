@@ -3,31 +3,34 @@ import { Command, Option } from 'commander'
 import { Script } from './Script'
 
 export class ArgumentParser {
-    command: Command
+    program: Command
 
     constructor() {
+        this.program = new Command()
+        this.program.exitOverride()
     }
 
-    registerScript(script: Script, parentCommand?: Command, callback?) {
-        this.command = parentCommand?.command(script.name) ?? new Command()
-        this.command.exitOverride()
+    registerScript(script: Script, callback?) {
+        const command = this.program.command(script.name)
+        command.exitOverride()
         const options = script.optionsArray
-        this.addOptions(options, this.command)
-        if (callback) this.command.action(callback)
+        this.addOptions(options, command)
+        if (callback) command.action(callback)
+    }
+
+    addOptions(options, command?) {
+        command = command ?? this.program
+        options.forEach(o => command.addOption(this.generateCommanderOption(o)))
     }
 
     parse(argv) {
         try {
-            this.command.parse(argv)
-            return this.command.opts()
+            this.program.parse(argv)
+            return this.program.opts()
         } catch (err) {
             if (err.code === 'commander.helpDisplayed') process.exit()
             throw err
         }
-    }
-
-    addOptions(options, program) {
-        options.forEach(o => program.addOption(this.generateCommanderOption(o)))
     }
 
     generateCommanderOption(option) {
