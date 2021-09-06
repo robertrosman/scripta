@@ -22,7 +22,7 @@ describe('Script.js', () => {
         test('sets up store', () => {
             const script = new Script({ name: 'test' })
 
-            expect(script.context.store.testData).toBe(true)
+            expect(script.store.testData).toBe(true)
         })
 
         test('calls options generator if function', () => {
@@ -76,7 +76,7 @@ describe('Script.js', () => {
                 ]
             })
 
-            script.context.store = { testData: "value in store" }
+            script.store = { testData: "value in store" }
             script.parsedOptions = {}
             script.setupOptions()
 
@@ -169,8 +169,8 @@ describe('Script.js', () => {
             await script.runForm()
 
             expect(script.setupOnceOptions.length).toBe(1)
-            expect(script.context.store.saveThis).toBe(true)
-            expect(script.context.store.doNotSave).toBe(undefined)
+            expect(script.store.saveThis).toBe(true)
+            expect(script.store.doNotSave).toBe(undefined)
         })
 
         test('saves value to store if storeDefault is set', async () => {
@@ -195,8 +195,8 @@ describe('Script.js', () => {
             await script.runForm()
 
             expect(script.storeDefaultOptions.length).toBe(1)
-            expect(script.context.store.saveThis).toBe(true)
-            expect(script.context.store.doNotSave).toBe(undefined)
+            expect(script.store.saveThis).toBe(true)
+            expect(script.store.doNotSave).toBe(undefined)
         })
 
     })

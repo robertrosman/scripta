@@ -49,8 +49,8 @@ export class Runner {
       await script.runForm()
       const commandArguments = new ArgumentParser().generateCommandCall(script.optionsArray, script.parsedOptions)
       console.log(`zse ${script.name} ${commandArguments}\n`)
-      await script.command(script.parsedOptions, script.context)
-      await Store.write(script.name, script.context.store)
+      await script.definition.command(script.parsedOptions, script.context)
+      await Store.write(script.name, script.store)
     }
   }
 

@@ -1,18 +1,7 @@
 import inquirer from "inquirer";
 import { Form } from "./Form.js";
+import { ScriptDefinition, OptionDefinition } from "./ScriptDefinition.js";
 import { Store } from "./Store.js";
-
-interface ScriptDefinition {
-    name?: string;
-    options?: OptionDefinition[] | OptionDefinitionGenerator;
-    store?: UnknownObjectStructure;
-    command?(options: OptionDefinition[], context: Context): void;
-}
-
-interface OptionDefinition extends inquirer.Question {
-    storeDefault?: boolean;
-    setupOnce?: boolean;
-}
 
 interface Context {
     store?: UnknownObjectStructure;
@@ -22,47 +11,42 @@ interface UnknownObjectStructure {
     [key: string]: any;
 }
 
-type OptionDefinitionGenerator = (store: UnknownObjectStructure, parsedOptions?: UnknownObjectStructure) => [OptionDefinition];
-
-
 export class Script {
     name: string;
+    definition: ScriptDefinition;
     context: Context;
-    options?: OptionDefinition[] | OptionDefinitionGenerator;
     optionsArray: OptionDefinition[];
     parsedOptions?: UnknownObjectStructure;
     setupOnceOptions?: OptionDefinition[];
     storeDefaultOptions?: OptionDefinition[];
-    command: (options: OptionDefinition[], context: Context) => void;
     store: UnknownObjectStructure;
 
     constructor(scriptDefinition: ScriptDefinition = {}, context = {}) {
+        this.definition = scriptDefinition
         this.context = context
-        this.options = scriptDefinition?.options
-        this.command = scriptDefinition?.command
-        this.store = scriptDefinition?.store
         this.name = scriptDefinition.name ?? 'test'  // TODO: dynamically fetch script name from caller 
-        this.context.store = Store.read(this.name, this.store)
+        this.store = Store.read(this.name, this.definition.store)
+        this.context.store = this.store
 
         this.setupOptions()
     }
 
     setupOptions() {
-        this.optionsArray = (typeof this.options === 'function')
-            ? this.options(this.context.store, this.parsedOptions)
-            : this.options ?? []
+        this.optionsArray = (typeof this.definition.options === 'function')
+            ? this.definition.options(this.store, this.parsedOptions)
+            : this.definition.options ?? []
 
         if (this.parsedOptions) {
             this.setupOnceOptions = this.optionsArray?.filter(o => o.setupOnce === true)
-            this.setupOnceOptions?.filter(soo => this.context.store[soo.name] !== undefined).forEach(soo => {
-                this.parsedOptions[soo.name] = this.context.store[soo.name]
+            this.setupOnceOptions?.filter(soo => this.store[soo.name] !== undefined).forEach(soo => {
+                this.parsedOptions[soo.name] = this.store[soo.name]
                 this.optionsArray = this.optionsArray?.filter(o => o.name !== soo.name)
             })
         }
 
         this.storeDefaultOptions = this.optionsArray?.filter(o => o.storeDefault === true)
-        this.storeDefaultOptions?.filter(soo => this.context.store[soo.name] !== undefined).forEach(soo => {
-            this.optionsArray.find(o => o.name === soo.name).default = this.context.store[soo.name]
+        this.storeDefaultOptions?.filter(soo => this.store[soo.name] !== undefined).forEach(soo => {
+            this.optionsArray.find(o => o.name === soo.name).default = this.store[soo.name]
         })
 
 
@@ -71,7 +55,7 @@ export class Script {
     async runForm() {
         this.setupOptions()
         this.parsedOptions = await Form.run(this.optionsArray, this.parsedOptions)
-        this.setupOnceOptions?.forEach(o => this.context.store[o.name] = this.parsedOptions[o.name])
-        this.storeDefaultOptions?.forEach(o => this.context.store[o.name] = this.parsedOptions[o.name])
+        this.setupOnceOptions?.forEach(o => this.store[o.name] = this.parsedOptions[o.name])
+        this.storeDefaultOptions?.forEach(o => this.store[o.name] = this.parsedOptions[o.name])
     }
 }
