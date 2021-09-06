@@ -44,12 +44,12 @@ export class Runner {
   }
 
   createScriptCallback(script) {
-    return async (parsedOptions) => {
-      script.parsedOptions = parsedOptions
+    return async (options) => {
+      script.options = options
       await script.runForm()
-      const commandArguments = new ArgumentParser().generateCommandCall(script.definition.options, script.parsedOptions)
+      const commandArguments = new ArgumentParser().generateCommandCall(script.definition.options, script.options)
       console.log(`zse ${script.name} ${commandArguments}\n`)
-      await script.definition.command(script.parsedOptions, script.context)
+      await script.definition.command(script.options, script.context)
       await Store.write(script.name, script.store)
     }
   }

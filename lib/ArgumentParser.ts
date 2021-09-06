@@ -43,13 +43,13 @@ export class ArgumentParser {
         return newOption
     }
 
-    generateCommandCall(options, parsedOptions) {
+    generateCommandCall(optionDefinitions, options) {
         const args = []
-        options?.forEach(o => {
-            if (o.type === 'confirm' && parsedOptions[o.name] === true) {
+        optionDefinitions?.forEach(o => {
+            if (o.type === 'confirm' && options[o.name] === true) {
                 args.push(`--${paramCase(o.name)}`)
-            } else if (this.wantValue(o) && parsedOptions[o.name] !== undefined) {
-                const value = JSON.stringify(parsedOptions[o.name])
+            } else if (this.wantValue(o) && options[o.name] !== undefined) {
+                const value = JSON.stringify(options[o.name])
                 args.push(`--${paramCase(o.name)} ${value}`)
             }
         })

@@ -28,7 +28,7 @@ describe('Script.js', () => {
         test('calls options generator if function', () => {
             const script = new Script({
                 name: 'test',
-                options: (store, parsedOptions) => [
+                options: (store, options) => [
                     {
                         name: 'testData',
                         type: 'confirm',
@@ -77,10 +77,10 @@ describe('Script.js', () => {
             })
 
             script.store = { testData: "value in store" }
-            script.parsedOptions = {}
+            script.options = {}
             script.setupOptions()
 
-            expect(script.parsedOptions.testData).toBe("value in store")
+            expect(script.options.testData).toBe("value in store")
             expect(script.definition.options.length).toBe(1)
         })
 
@@ -101,7 +101,7 @@ describe('Script.js', () => {
                 ]
             })
 
-            script.parsedOptions = {}
+            script.options = {}
             script.setupOptions()
 
             expect(script.definition.options[0].default).toBe(true)
@@ -112,19 +112,19 @@ describe('Script.js', () => {
     })
 
     describe('runForm', () => {
-        test('runs setupOptions again with parsedOptions', async () => {
+        test('runs setupOptions again with options', async () => {
             const script = new Script({
-                options: (store, parsedOptions) => [
+                options: (store, options) => [
                     {
                         name: 'testData',
                         type: 'confirm',
                         message: 'Do you want to test this?',
-                        default: parsedOptions?.testData
+                        default: options?.testData
                     }
                 ]
             })
 
-            script.parsedOptions = { testData: "something else" }
+            script.options = { testData: "something else" }
             await script.runForm()
 
             expect(script.definition.options[0].default).toBe("something else")
@@ -144,7 +144,7 @@ describe('Script.js', () => {
             await script.runForm()
 
             expect(formSpy).toHaveBeenCalledTimes(1)
-            expect(script.parsedOptions.first).toBe(true)
+            expect(script.options.first).toBe(true)
         })
 
         test('saves value to store if setupOnce is set', async () => {
@@ -165,7 +165,7 @@ describe('Script.js', () => {
                 ]
             })
 
-            script.parsedOptions = {}
+            script.options = {}
             await script.runForm()
 
             expect(script.definition.setupOnceOptions.length).toBe(1)
@@ -191,7 +191,7 @@ describe('Script.js', () => {
                 ]
             })
 
-            script.parsedOptions = {}
+            script.options = {}
             await script.runForm()
 
             expect(script.definition.storeDefaultOptions.length).toBe(1)

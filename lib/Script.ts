@@ -15,8 +15,7 @@ export class Script {
     name: string;
     definition: SmartScriptDefinition;
     context: Context;
-    optionsArray: OptionDefinition[];
-    parsedOptions?: UnknownObjectStructure;
+    options?: UnknownObjectStructure;
     store: UnknownObjectStructure;
 
     constructor(scriptDefinition: ScriptDefinition = {}, context = {}) {
@@ -28,9 +27,9 @@ export class Script {
     }
 
     setupOptions() {
-        if (this.parsedOptions) {
+        if (this.options) {
             this.definition.setupOnceOptions.filter(soo => this.store[soo.name] !== undefined).forEach(soo => {
-                this.parsedOptions[soo.name] = this.store[soo.name]
+                this.options[soo.name] = this.store[soo.name]
                 this.definition.removeOption(soo.name)
             })
         }
@@ -38,14 +37,12 @@ export class Script {
         this.definition.storeDefaultOptions.filter(soo => this.store[soo.name] !== undefined).forEach(soo => {
             this.definition.options.find(o => o.name === soo.name).default = this.store[soo.name]
         })
-
-
     }
 
     async runForm() {
         this.setupOptions()
-        this.parsedOptions = await Form.run(this.definition.options, this.parsedOptions)
-        this.definition.setupOnceOptions.forEach(o => this.store[o.name] = this.parsedOptions[o.name])
-        this.definition.storeDefaultOptions.forEach(o => this.store[o.name] = this.parsedOptions[o.name])
+        this.options = await Form.run(this.definition.options, this.options)
+        this.definition.setupOnceOptions.forEach(o => this.store[o.name] = this.options[o.name])
+        this.definition.storeDefaultOptions.forEach(o => this.store[o.name] = this.options[o.name])
     }
 }

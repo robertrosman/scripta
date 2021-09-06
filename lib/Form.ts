@@ -1,10 +1,11 @@
-import inquirer from 'inquirer'
+import inquirer, { Answers } from 'inquirer'
 import InquirerAutocompletePrompt from 'inquirer-autocomplete-prompt'
 inquirer.registerPrompt('autocomplete', InquirerAutocompletePrompt)
 import fuzzy from 'fuzzy'
+import { OptionDefinition } from './ScriptDefinition'
 
 export class Form {
-  static async run(questions, answers = {}): Promise<any> {
+  static async run(questions: OptionDefinition[], answers = {}): Promise<Answers> {
     const unansweredQuestions = questions.filter(o => answers[o.name] === undefined)
     this.generateAutocompleteSource(unansweredQuestions)
     const additionalAnswers = await inquirer.prompt(unansweredQuestions)

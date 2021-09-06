@@ -14,7 +14,7 @@ interface UnknownObjectStructure {
     [key: string]: any;
 }
 
-type OptionDefinitionGenerator = (store: UnknownObjectStructure, parsedOptions?: UnknownObjectStructure) => OptionDefinition[];
+type OptionDefinitionGenerator = (store: UnknownObjectStructure, options?: UnknownObjectStructure) => OptionDefinition[];
 
 export interface ScriptDefinition {
     name?: string;
@@ -43,7 +43,7 @@ export class SmartScriptDefinition implements ScriptDefinition {
 
     get options(): OptionDefinition[] {
         return ((typeof this.optionsSource === 'function')
-            ? this.optionsSource(this.script.store, this.script.parsedOptions)
+            ? this.optionsSource(this.script.store, this.script.options)
             : this.optionsSource ?? []
         ).filter(o => !this.removedOptions.includes(o.name))
     }
