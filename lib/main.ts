@@ -40,35 +40,13 @@ const setupScript = async (name, importedScript) => {
 
 const createScriptCallback = (script) =>
   async (parsedOptions) => {
-    parsedOptions = await resolveOptions(script, parsedOptions)
-    const commandArguments = new ArgumentParser().generateCommandCall(script.optionsArray, parsedOptions)
+    script.parsedOptions = parsedOptions
+    await script.runForm()
+    const commandArguments = new ArgumentParser().generateCommandCall(script.optionsArray, script.parsedOptions)
     console.log(`zse ${script.name} ${commandArguments}\n`)
-    await script.run(parsedOptions, script.context)
+    await script.run(script.parsedOptions, script.context)
     await Store.write(script.name, script.context.store)
   }
-
-const resolveOptions = async (script, parsedOptions) => {
-  script.parsedOptions = parsedOptions
-  script.setupOptions()
-  const store = script.context.store
-  let options = script.optionsArray
-
-  const setupOnceOptions = options?.filter(o => o.setupOnce === true)
-  setupOnceOptions?.filter(soo => store[soo.name] !== undefined).forEach(soo => {
-    parsedOptions[soo.name] = store[soo.name]
-    options = options?.filter(o => o.name !== soo.name)
-  })
-
-  const storeDefaultOptions = options?.filter(o => o.storeDefault === true)
-  storeDefaultOptions?.filter(soo => store[soo.name] !== undefined).forEach(soo => {
-    options.find(o => o.name === soo.name).default = store[soo.name]
-  })
-
-  await script.runForm()
-  setupOnceOptions?.forEach(o => store[o.name] = parsedOptions[o.name])
-  storeDefaultOptions?.forEach(o => store[o.name] = parsedOptions[o.name])
-  return parsedOptions
-}
 
 const resolveScript = async (availableScripts) => {
   const availableScriptsOptions = [
