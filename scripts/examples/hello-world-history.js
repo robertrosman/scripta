@@ -14,7 +14,7 @@ export const store = {
   history: []
 }
 
-export const run = async ({ target }, { store }) => {
+export const command = async ({ target }, { store }) => {
   if (!store.history.includes(target)) store.history.push(target)
   console.log(`Hello ${target}`)
 }

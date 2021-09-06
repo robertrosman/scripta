@@ -6,7 +6,7 @@ interface ScriptDefinition {
     name?: string;
     options?: OptionDefinition[] | OptionDefinitionGenerator;
     store?: UnknownObjectStructure;
-    run?(options: OptionDefinition[], context: Context): void;
+    command?(options: OptionDefinition[], context: Context): void;
 }
 
 interface OptionDefinition extends inquirer.Question {
@@ -33,13 +33,13 @@ export class Script {
     parsedOptions?: UnknownObjectStructure;
     setupOnceOptions?: OptionDefinition[];
     storeDefaultOptions?: OptionDefinition[];
-    run: (options: OptionDefinition[], context: Context) => void;
+    command: (options: OptionDefinition[], context: Context) => void;
     store: UnknownObjectStructure;
 
     constructor(scriptDefinition: ScriptDefinition = {}, context = {}) {
         this.context = context
         this.options = scriptDefinition?.options
-        this.run = scriptDefinition?.run
+        this.command = scriptDefinition?.command
         this.store = scriptDefinition?.store
         this.name = scriptDefinition.name ?? 'test'  // TODO: dynamically fetch script name from caller 
         this.context.store = Store.read(this.name, this.store)

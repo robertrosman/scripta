@@ -18,7 +18,7 @@ export const options = [
   }
 ]
 
-export const run = async ({ name, editor }, { __dirname }) => {
+export const command = async ({ name, editor }, { __dirname }) => {
   const filename = `${paramCase(name)}.js`
   const source = path.join(__dirname, 'lib', 'boilerplate.js')
   const destination = path.join(__dirname, 'scripts', filename)

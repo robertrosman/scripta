@@ -1,4 +1,4 @@
-export const run = async (_) => {
+export const command = async (_) => {
   cd('..')
   await $`ls -a`
 }

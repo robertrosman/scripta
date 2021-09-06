@@ -7,6 +7,6 @@ export const options = [
   }
 ]
 
-export const run = async ({ target }) => {
+export const command = async ({ target }) => {
   console.log(`Hello ${target}`)
 }

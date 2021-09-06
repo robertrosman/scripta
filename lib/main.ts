@@ -44,7 +44,7 @@ const createScriptCallback = (script) =>
     await script.runForm()
     const commandArguments = new ArgumentParser().generateCommandCall(script.optionsArray, script.parsedOptions)
     console.log(`zse ${script.name} ${commandArguments}\n`)
-    await script.run(script.parsedOptions, script.context)
+    await script.command(script.parsedOptions, script.context)
     await Store.write(script.name, script.context.store)
   }
 
