@@ -21,7 +21,7 @@ const readStore = () => {
 }
 
 const saveStore = (data) => {
-  const json = JSON.stringify(data)
+  const json: string = JSON.stringify(data)
   fs.writeFileSync(filename, json, { encoding: 'utf8' })
 }
 
