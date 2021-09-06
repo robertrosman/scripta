@@ -13,7 +13,7 @@ export class ArgumentParser {
     registerScript(script: Script, callback?) {
         const command = this.program.command(script.name)
         command.exitOverride()
-        const options = script.optionsArray
+        const options = script.definition.options
         this.addOptions(options, command)
         if (callback) command.action(callback)
     }

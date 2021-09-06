@@ -38,7 +38,7 @@ describe('Script.js', () => {
                 ]
             })
 
-            expect(script.optionsArray[0].default).toBe(true)
+            expect(script.definition.options[0].default).toBe(true)
         })
 
         test('uses options array if not a function', () => {
@@ -53,7 +53,7 @@ describe('Script.js', () => {
                 ]
             })
 
-            expect(script.optionsArray[0].name).toBe('testData')
+            expect(script.definition.options[0].name).toBe('testData')
         })
     })
 
@@ -81,7 +81,7 @@ describe('Script.js', () => {
             script.setupOptions()
 
             expect(script.parsedOptions.testData).toBe("value in store")
-            expect(script.optionsArray.length).toBe(1)
+            expect(script.definition.options.length).toBe(1)
         })
 
         test('set default value from store if storeDefault is true', async () => {
@@ -104,9 +104,9 @@ describe('Script.js', () => {
             script.parsedOptions = {}
             script.setupOptions()
 
-            expect(script.optionsArray[0].default).toBe(true)
-            expect(script.optionsArray[1].default).toBe(undefined)
-            expect(script.storeDefaultOptions.length).toBe(1)
+            expect(script.definition.options[0].default).toBe(true)
+            expect(script.definition.options[1].default).toBe(undefined)
+            expect(script.definition.storeDefaultOptions.length).toBe(1)
         })
 
     })
@@ -127,7 +127,7 @@ describe('Script.js', () => {
             script.parsedOptions = { testData: "something else" }
             await script.runForm()
 
-            expect(script.optionsArray[0].default).toBe("something else")
+            expect(script.definition.options[0].default).toBe("something else")
         })
 
         test('runs Form with questions', async () => {
@@ -168,7 +168,7 @@ describe('Script.js', () => {
             script.parsedOptions = {}
             await script.runForm()
 
-            expect(script.setupOnceOptions.length).toBe(1)
+            expect(script.definition.setupOnceOptions.length).toBe(1)
             expect(script.store.saveThis).toBe(true)
             expect(script.store.doNotSave).toBe(undefined)
         })
@@ -194,7 +194,7 @@ describe('Script.js', () => {
             script.parsedOptions = {}
             await script.runForm()
 
-            expect(script.storeDefaultOptions.length).toBe(1)
+            expect(script.definition.storeDefaultOptions.length).toBe(1)
             expect(script.store.saveThis).toBe(true)
             expect(script.store.doNotSave).toBe(undefined)
         })
