@@ -8,24 +8,17 @@ import { Form } from './Form.js'
 
 export class Runner {
   availableScripts: object
+  argumentParser: ArgumentParser
 
   constructor() {
     this.availableScripts = {}
+    this.argumentParser = new ArgumentParser()
   }
 
   async run() {
     try {
-      const scriptsPath = path.join(__dirname, 'scripts')
-      const files = getFilesRecursively(scriptsPath)
-      const argumentParser = new ArgumentParser()
-      for (const file of files) {
-        const name = file.replace(/\.\w+$/, '')
-        const importedScript = await import(path.join(scriptsPath, file))
-        const script = new Script({ name, ...importedScript }, { ...zx, __dirname })
-        this.availableScripts[name] = this.createScriptCallback(script)
-        argumentParser.registerScript(script, this.availableScripts[name])
-      }
-      argumentParser.parse(process.argv)
+      await this.setupScripts()
+      this.argumentParser.parse(process.argv)
     } catch (err) {
       if (err.code === 'commander.helpDisplayed') {
         process.exit(0)
@@ -35,6 +28,18 @@ export class Runner {
       } else {
         console.error(err)
       }
+    }
+  }
+
+  private async setupScripts() {
+    const scriptsPath = path.join(__dirname, 'scripts')
+    const files = getFilesRecursively(scriptsPath)
+    for (const file of files) {
+      const name = file.replace(/\.\w+$/, '')
+      const importedScript = await import(path.join(scriptsPath, file))
+      const script = new Script({ name, ...importedScript }, { ...zx, __dirname })
+      this.availableScripts[name] = this.createScriptCallback(script)
+      this.argumentParser.registerScript(script, this.availableScripts[name])
     }
   }
 
