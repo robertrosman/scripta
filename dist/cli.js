@@ -1,2 +1,4 @@
 #!/usr/bin/env node
-import('./build/main.js')
+import { Runner } from './build/Runner.js'
+
+new Runner().run()
