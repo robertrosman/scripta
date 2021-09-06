@@ -5,6 +5,7 @@ import { Store } from './Store.js'
 import { Script } from './Script.js'
 import { getFilesRecursively, __dirname } from './utils.js'
 import { ArgumentParser } from './ArgumentParser.js'
+import { Form } from './Form.js'
 
 (async () => {
   const availableScripts = {}
@@ -47,8 +48,9 @@ const createScriptCallback = (script) =>
   }
 
 const resolveOptions = async (script, parsedOptions) => {
+  script.parsedOptions = parsedOptions
+  script.setupOptions()
   const store = script.context.store
-  if (typeof script.options === 'function') { script.optionsArray = script.options(store, parsedOptions) }
   let options = script.optionsArray
 
   const setupOnceOptions = options?.filter(o => o.setupOnce === true)
@@ -62,7 +64,7 @@ const resolveOptions = async (script, parsedOptions) => {
     options.find(o => o.name === soo.name).default = store[soo.name]
   })
 
-  parsedOptions = await interactiveFallback(options ?? [], parsedOptions)
+  await script.runForm()
   setupOnceOptions?.forEach(o => store[o.name] = parsedOptions[o.name])
   storeDefaultOptions?.forEach(o => store[o.name] = parsedOptions[o.name])
   return parsedOptions
@@ -77,6 +79,6 @@ const resolveScript = async (availableScripts) => {
       choices: Object.keys(availableScripts)
     }
   ]
-  const { script } = await interactiveFallback(availableScriptsOptions, {})
+  const { script } = await Form.run(availableScriptsOptions, {})
   return script
 }

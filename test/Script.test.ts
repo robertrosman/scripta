@@ -1,3 +1,4 @@
+import { Form } from '../lib/Form'
 import { Script } from '../lib/Script'
 import { Store } from '../lib/Store'
 
@@ -24,8 +25,8 @@ describe('Script.js', () => {
             expect(script.context.store.testData).toBe(true)
         })
 
-        test('calls options callback if function', () => {
-            const script = new Script({ 
+        test('calls options generator if function', () => {
+            const script = new Script({
                 name: 'test',
                 options: (store, parsedOptions) => [
                     {
@@ -41,7 +42,7 @@ describe('Script.js', () => {
         })
 
         test('uses options array if not a function', () => {
-            const script = new Script({ 
+            const script = new Script({
                 name: 'test',
                 options: [
                     {
@@ -55,6 +56,42 @@ describe('Script.js', () => {
             expect(script.optionsArray[0].name).toBe('testData')
         })
 
+        describe('runForm', () => {
+
+            test('runs setupOptions again with parsedOptions', async () => {
+                const script = new Script({
+                    options: (store, parsedOptions) => [
+                        {
+                            name: 'testData',
+                            type: 'confirm',
+                            message: 'Do you want to test this?',
+                            default: parsedOptions?.testData
+                        }
+                    ]
+                })
+
+                script.parsedOptions = { testData: "something else" }
+                await script.runForm()
+
+                expect(script.optionsArray[0].default).toBe("something else")
+            })
+
+            test('runs Form with questions', async () => {
+                const formSpy = jest.spyOn(Form, 'run').mockImplementation(async () => {})
+                const options = [
+                    {
+                        name: 'testData',
+                        type: 'confirm',
+                        message: 'Do you want to test this?'
+                    }
+                ]
+                const script = new Script({ options })
+
+                await script.runForm()
+
+                expect(formSpy).toHaveBeenCalledTimes(1)
+            })
+        })
 
     })
 

@@ -1,9 +1,8 @@
 import inquirer from 'inquirer'
 import InquirerAutocompletePrompt from 'inquirer-autocomplete-prompt'
 inquirer.registerPrompt('autocomplete', InquirerAutocompletePrompt)
-import fuzzy from 'fuzzy'
 import { ArgumentParser } from './ArgumentParser.js'
-import { Script } from './Script.js'
+import { Form } from './Form.js'
 
 const resolveOptions = async (argv = [], options = null) => {
   const parser = new ArgumentParser()
@@ -18,13 +17,8 @@ const resolveOptions = async (argv = [], options = null) => {
   }
 }
 
-const interactiveFallback = async (options, parsedOptions) => {
-  const questions = options.filter(o => parsedOptions[o.name] === undefined)
-  questions.filter(o => o.type === 'autocomplete' && o.source === undefined).forEach(o => {
-    o.source = async (_, input) => fuzzy.filter(input ?? '', o.choices).map((el) => el.original)
-  })
-  const answers = await inquirer.prompt(questions)
-  return Object.assign({}, parsedOptions, answers)
+const interactiveFallback = async (options, parsedOptions): Promise<any> => {
+  return await Form.run(options, parsedOptions)
 }
 
 export {

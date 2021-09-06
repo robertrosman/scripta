@@ -1,4 +1,5 @@
 import inquirer from "inquirer";
+import { Form } from "./Form.js";
 import { Store } from "./Store.js";
 
 interface ScriptDefinition {
@@ -29,6 +30,7 @@ export class Script {
     context: Context;
     options?: OptionDefinition[] | OptionDefinitionGenerator;
     optionsArray: OptionDefinition[];
+    parsedOptions?: UnknownObjectStructure;
     run: (options: OptionDefinition[], context: Context) => void;
     store: UnknownObjectStructure;
 
@@ -45,7 +47,12 @@ export class Script {
 
     setupOptions() {
         this.optionsArray = (typeof this.options === 'function')
-            ? this.options(this.context.store)
+            ? this.options(this.context.store, this.parsedOptions)
             : this.options ?? []
+    }
+
+    async runForm() {
+        this.setupOptions()
+        await Form.run(this.optionsArray, this.parsedOptions)
     }
 }
