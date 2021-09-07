@@ -11,6 +11,11 @@ describe('Script.js', () => {
         }
     })
 
+    afterEach(() => {
+        jest.clearAllMocks();
+        jest.restoreAllMocks();
+    });
+
     describe('constructor', () => {
 
         test('returns object', () => {
@@ -111,8 +116,39 @@ describe('Script.js', () => {
 
     })
 
+    describe('run', () => {
+        test('runs command with given options and form answers', async () => {
+            const formSpy = jest.spyOn(Form, 'run').mockImplementation(async (_, options) => ({ formOption: "test2", ...options }))
+            const consoleSpy = jest.spyOn(console, 'log').mockImplementation(() => {})
+            const command = jest.fn()
+            const script = new Script({
+                options: [
+                    {
+                        name: 'option',
+                        type: 'input',
+                        message: 'This is passed into function'
+                    },
+                    {
+                        name: 'formOption',
+                        type: 'input',
+                        message: 'This is asked from user'
+                    }
+                ],
+                command
+            })
+
+            await script.run({ option: "test" })
+
+            expect(command).toHaveBeenCalled()
+            expect(command.mock.calls[0][0].option).toBe("test")
+            expect(command.mock.calls[0][0].formOption).toBe("test2")
+            expect(command.mock.calls[0][1]).toBe(script.context)
+        })
+    })
+
     describe('runForm', () => {
         test('runs setupOptions again with options', async () => {
+            const formSpy = jest.spyOn(Form, 'run').mockImplementation(async (_, options) => (options))
             const script = new Script({
                 options: (store, options) => [
                     {

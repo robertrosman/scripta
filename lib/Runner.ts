@@ -54,19 +54,8 @@ export class Runner {
       const script = (importedScript.default instanceof Script) 
         ? importedScript.default
         : new Script({ name, ...importedScript }, { ...zx, __dirname })
-      this.availableScripts[name] = this.createScriptCallback(script)
+      this.availableScripts[name] = script.run.bind(script)
       this.argumentParser.registerScript(script, this.availableScripts[name])
-    }
-  }
-
-  createScriptCallback(script) {
-    return async (options) => {
-      script.options = options
-      await script.runForm()
-      const commandArguments = new ArgumentParser().generateCommandCall(script.definition.options, script.options)
-      console.log(`zse ${script.name} ${commandArguments}\n`)
-      await script.definition.command(script.options, script.context)
-      await Store.write(script.name, script.store)
     }
   }
 

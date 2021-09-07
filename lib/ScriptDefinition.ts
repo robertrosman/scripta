@@ -20,13 +20,13 @@ export interface ScriptDefinition {
     name?: string;
     options?: OptionDefinition[] | OptionDefinitionGenerator
     store?: UnknownObjectStructure;
-    command?(options: OptionDefinition[], context: Context): void;
+    command?(options: OptionDefinition[], context: Context): Promise<any>;
 }
 
 export class SmartScriptDefinition implements ScriptDefinition {
     name?: string;
     store?: UnknownObjectStructure;
-    command?(options: OptionDefinition[], context: Context): void;
+    command?(options: UnknownObjectStructure, context: Context): Promise<any>;
     script: Script
     removedOptions: string[];
 

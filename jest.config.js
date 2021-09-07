@@ -3,6 +3,8 @@ export default {
   testEnvironment: 'node',
   testMatch: ['<rootDir>/**/test/**/*.test.ts'],
   testPathIgnorePatterns: ['/node_modules/'],
+  clearMocks: true,
+  resetMocks: true,
   // coverageDirectory: './coverage',
   // coveragePathIgnorePatterns: ['node_modules', 'src/database', 'src/test', 'src/types'],
   // reporters: ['default', 'jest-junit'],
