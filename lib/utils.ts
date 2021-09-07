@@ -4,6 +4,8 @@ import dirname from 'es-dirname'
 
 export const __dirname = path.join(dirname(), '..', '..')
 
+export const scriptsPath = path.join(__dirname, 'scripts')
+
 export const getFilesRecursively = (basePath: string, relativePath?: string) => {
   relativePath = relativePath || ''
   const files = []
@@ -19,4 +21,11 @@ export const getFilesRecursively = (basePath: string, relativePath?: string) => 
     }
   }
   return files
+}
+
+export const nameifyScript = (filename) => {
+  const absolutePath = path.resolve(filename)
+  const relativeToScriptsFolder = path.join(path.relative(scriptsPath, absolutePath))
+  const withoutExtension = relativeToScriptsFolder.replace(/\.\w+$/, '')
+  return withoutExtension
 }

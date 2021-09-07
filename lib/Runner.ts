@@ -2,22 +2,25 @@ import * as zx from 'zx'
 import path from 'path'
 import { Store } from './Store.js'
 import { Script } from './Script.js'
-import { getFilesRecursively, __dirname } from './utils.js'
+import { getFilesRecursively, __dirname, nameifyScript } from './utils.js'
 import { ArgumentParser } from './ArgumentParser.js'
 import { Form } from './Form.js'
 
 export class Runner {
   availableScripts: object
   argumentParser: ArgumentParser
+  scriptsPath: string
 
   constructor() {
     this.availableScripts = {}
     this.argumentParser = new ArgumentParser()
+    this.scriptsPath = path.join(__dirname, 'scripts')
   }
 
   async run() {
     try {
-      await this.setupScripts()
+      const files = this.getFileList()
+      await this.setupScripts(files)
       this.argumentParser.parse(process.argv)
     } catch (err) {
       if (err.code === 'commander.helpDisplayed') {
@@ -31,12 +34,23 @@ export class Runner {
     }
   }
 
-  private async setupScripts() {
-    const scriptsPath = path.join(__dirname, 'scripts')
-    const files = getFilesRecursively(scriptsPath)
+  private getFileList() {
+    const files = []
+    if (process.argv[2] && fs.existsSync(process.argv[2]) && fs.statSync(process.argv[2])?.isFile()) {
+      const absolutePath = path.resolve(process.argv[2])
+      files.push(path.relative(this.scriptsPath, absolutePath))
+      process.argv[2] = nameifyScript(absolutePath)
+    }
+    else {
+      files.push(...getFilesRecursively(this.scriptsPath))
+    }
+    return files
+  }
+
+  private async setupScripts(files: string[]) {
     for (const file of files) {
-      const name = file.replace(/\.\w+$/, '')
-      const importedScript = await import(path.join(scriptsPath, file))
+      const name = nameifyScript(path.join(this.scriptsPath, file))
+      const importedScript = await import(path.join(this.scriptsPath, file))
       const script = (importedScript.default instanceof Script) 
         ? importedScript.default
         : new Script({ name, ...importedScript }, { ...zx, __dirname })
