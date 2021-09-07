@@ -37,7 +37,9 @@ export class Runner {
     for (const file of files) {
       const name = file.replace(/\.\w+$/, '')
       const importedScript = await import(path.join(scriptsPath, file))
-      const script = new Script({ name, ...importedScript }, { ...zx, __dirname })
+      const script = (importedScript.default instanceof Script) 
+        ? importedScript.default
+        : new Script({ name, ...importedScript }, { ...zx, __dirname })
       this.availableScripts[name] = this.createScriptCallback(script)
       this.argumentParser.registerScript(script, this.availableScripts[name])
     }
