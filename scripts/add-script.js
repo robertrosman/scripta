@@ -1,4 +1,4 @@
-import { Script } from 'zse'
+import { Script } from 'scripta'
 import fs from 'fs/promises'
 import { constants } from 'fs'
 import path from 'path'

@@ -31,7 +31,7 @@ export class Script {
         this.options = Object.assign(this.options ?? {}, options)
         await this.runForm()
         const commandArguments = new ArgumentParser().generateCommandCall(this.definition.options, this.options)
-        console.log(`zse ${this.name} ${commandArguments}\n`)
+        console.log(`scripta ${this.name} ${commandArguments}\n`)
         const result = await this.definition.command(this.options, this.context)
         Store.write(this.name, this.store)
         return result

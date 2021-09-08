@@ -1,4 +1,4 @@
-import { Script } from 'zse'
+import { Script } from 'scripta'
 
 export default new Script({
   name: 'examples/hello-world-history',
