@@ -8,13 +8,14 @@ let fsSpy = { readFileSync: null, writeFileSync: null};
 describe('Store', () => {
     beforeEach(() => {
         jest.resetAllMocks();
+        jest.restoreAllMocks();
         fsMockData = {
             test: {
                 testData: true
             }
         }
         Store.cache = Object.assign({}, fsMockData)
-        fsSpy.readFileSync = jest.spyOn(fs, 'readFileSync').mockImplementation(() => JSON.stringify(fsMockData))
+        fsSpy.readFileSync = jest.spyOn(fs, 'readFileSync').mockImplementation((filename) => JSON.stringify(fsMockData))
         fsSpy.writeFileSync = jest.spyOn(fs, 'writeFileSync').mockImplementation((filename, data) => { fsMockData = JSON.parse(data.toString()); })
     });
 
