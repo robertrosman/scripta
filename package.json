@@ -7,9 +7,10 @@
     "zse": "dist/cli.js"
   },
   "scripts": {
-    "start": "tsc && node dist/cli.js examples/ls",
-    "build": "tsc",
-    "build:watch": "tsc --watch",
+    "start": "npm run build && node dist/cli.js examples/hello-world --target world",
+    "build": "npm run clean && tsc",
+    "build:watch": "npm run clean && tsc --watch",
+    "clean": "rm -r dist/build",
     "test": "jest",
     "test:watch": "jest --watch",
     "test:clear": "jest --clearCache",
