@@ -1,10 +1,11 @@
 {
   "name": "zse",
   "version": "1.0.0",
-  "description": "zse script executor makes it easy to create and run scripts for any kind of automation",
-  "main": "dist/cli.js",
+  "description": "zse script executor makes it easy to manage and run scripts for any kind of automation",
+  "main": "./dist/index.js",
+  "exports": "./dist/index.js",
   "bin": {
-    "zse": "dist/cli.js"
+    "zse": "./dist/cli.js"
   },
   "scripts": {
     "start": "npm run build && node dist/cli.js examples/hello-world --target world",

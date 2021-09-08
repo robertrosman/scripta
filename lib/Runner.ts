@@ -49,13 +49,14 @@ export class Runner {
 
   private async setupScripts(files: string[]) {
     for (const file of files) {
-      const name = nameifyScript(path.join(this.scriptsPath, file))
+      const generatedName = nameifyScript(path.join(this.scriptsPath, file))
       const importedScript = await import(path.join(this.scriptsPath, file))
       const script = (importedScript.default instanceof Script) 
         ? importedScript.default
-        : new Script({ name, ...importedScript }, { ...zx, __dirname })
-      this.availableScripts[name] = script.run.bind(script)
-      this.argumentParser.registerScript(script, this.availableScripts[name])
+        : new Script({ name: generatedName, ...importedScript }, { ...zx, __dirname })
+      const givenName = script.name
+      this.availableScripts[givenName] = script.run.bind(script)
+      this.argumentParser.registerScript(script, this.availableScripts[givenName])
     }
   }
 
