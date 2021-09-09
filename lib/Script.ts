@@ -6,6 +6,7 @@ import { Store } from "./Store.js";
 
 interface Context {
     store?: UnknownObjectStructure;
+    __dirname?: string;
 }
 
 interface UnknownObjectStructure {
@@ -55,5 +56,9 @@ export class Script {
         this.definition.storeDefaultOptions.filter(soo => this.store[soo.name] !== undefined).forEach(soo => {
             this.definition.options.find(o => o.name === soo.name).default = this.store[soo.name]
         })
+    }
+
+    extendContext(additionalProperties: object) {
+        Object.assign(this.context, additionalProperties)
     }
 }

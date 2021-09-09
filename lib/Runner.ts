@@ -53,7 +53,8 @@ export class Runner {
       const importedScript = await import(path.join(this.scriptsPath, file))
       const script = (importedScript.default instanceof Script) 
         ? importedScript.default
-        : new Script({ name: generatedName, ...importedScript }, { ...zx, __dirname })
+        : new Script({ name: generatedName })
+      script.extendContext({ __dirname })
       const givenName = script.name
       this.availableScripts[givenName] = script.run.bind(script)
       this.argumentParser.registerScript(script, this.availableScripts[givenName])

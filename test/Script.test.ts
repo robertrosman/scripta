@@ -236,4 +236,15 @@ describe('Script.js', () => {
         })
 
     })
+
+    describe('extendContext', () => {
+        test('adds variables to context', async () => {
+            const command = jest.fn()
+            const script = new Script({ command })
+
+            script.extendContext({ __dirname: "/my/path" })
+
+            expect(script.context.__dirname).toBe("/my/path")
+        })
+    })
 })
