@@ -1,6 +1,7 @@
 import { paramCase } from 'change-case'
 import { Command, Option } from 'commander'
 import { Script } from './Script'
+import { OptionDefinition } from './ScriptDefinition'
 
 export class ArgumentParser {
     program: Command
@@ -18,7 +19,7 @@ export class ArgumentParser {
         if (callback) command.action(callback)
     }
 
-    addOptions(options, command?) {
+    addOptions(options: OptionDefinition[], command?: Command) {
         command = command ?? this.program
         options.forEach(o => command.addOption(this.generateCommanderOption(o)))
     }
@@ -43,7 +44,7 @@ export class ArgumentParser {
         return newOption
     }
 
-    generateCommandCall(optionDefinitions, options) {
+    generateCommandCall(optionDefinitions: OptionDefinition[], options) {
         const args = []
         optionDefinitions?.forEach(o => {
             if (o.type === 'confirm' && options[o.name] === true) {

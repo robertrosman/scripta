@@ -1,9 +1,11 @@
 import inquirer from "inquirer";
 import { Script } from "./Script";
 
-export interface OptionDefinition extends inquirer.Question {
+export interface OptionDefinition extends inquirer.Question<inquirer.Answers> {
     storeDefault?: boolean;
     setupOnce?: boolean;
+    shorthand?: string;
+    value?: string;
 }
 
 interface Context {
