@@ -52,6 +52,30 @@ describe('Form', () => {
     expect(answers.second).toBe('mock answer')
   })
 
+  test('skip questions if argumentOnly is true', async () => {
+    mockInquirer([{
+      verbose: false,  // will not be set
+      second: 'mock answer'
+    }])
+
+    const answers: any = await Form.run([
+      {
+        name: 'verbose',
+        type: 'confirm',
+        message: 'Turn on extra verbose logging',
+        argumentOnly: true
+      },
+      {
+        name: 'second',
+        type: 'input',
+        message: 'First and only answer'
+      },
+    ])
+
+    expect(answers.verbose).toBe(undefined)
+    expect(answers.second).toBe("mock answer")
+  })
+
   test('generates source if choices is given', async () => {
     const questions: any = [
       {

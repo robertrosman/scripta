@@ -60,6 +60,25 @@ describe('ArgumentRegistrator', () => {
     expect(options.hello).toBe('world')
   })
 
+  test('do not generate arguments if formOnly is true', async () => {
+    const parser = new ArgumentParser()
+
+    parser.addOptions([
+      {
+        name: 'hello',
+        type: 'input'
+      },
+      {
+        name: 'onlyInForm',
+        type: 'confirm',
+        formOnly: true
+      }
+    ])
+
+    expect((parser.program as any).options.length).toBe(1)
+    expect((parser.program as any).options[0].long).toBe('--hello')
+  })
+
   test('parse runs callback if given', async () => {
     const argv = mockArgv('test --test')
     const callback = jest.fn()
@@ -114,6 +133,21 @@ describe('generateCommandCall', () => {
     // Hmm, some strange behaviour with jest and escaped quotes, but it does work indeed
     // console.log(commandArguments)  // Try this to see for yourself
     expect(commandArguments).toBe(`--test "\\"that's\\" right"`)
+  })
+
+  test('skip arguments if formOnly is true', async () => {
+    const questions = [{
+      name: 'test',
+      type: 'input',
+      formOnly: true
+    }]
+    const answers = { test: '"that\'s" right' }
+
+    const commandArguments = new ArgumentParser().generateCommandCall(questions, answers)
+
+    // Hmm, some strange behaviour with jest and escaped quotes, but it does work indeed
+    // console.log(commandArguments)  // Try this to see for yourself
+    expect(commandArguments).toBe('')
   })
 
 })

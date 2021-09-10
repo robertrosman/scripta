@@ -4,6 +4,8 @@ import { Script } from "./Script";
 export interface OptionDefinition extends inquirer.Question<inquirer.Answers> {
     storeDefault?: boolean;
     setupOnce?: boolean;
+    argumentOnly?: boolean;
+    formOnly?: boolean;
     shorthand?: string;
     value?: string;
 }

@@ -21,7 +21,9 @@ export class ArgumentParser {
 
     addOptions(options: OptionDefinition[], command?: Command) {
         command = command ?? this.program
-        options.forEach(o => command.addOption(this.generateCommanderOption(o)))
+        options.filter(o => !o.formOnly).forEach(o => {
+            command.addOption(this.generateCommanderOption(o))
+        })
     }
 
     parse(argv) {
@@ -46,7 +48,7 @@ export class ArgumentParser {
 
     generateCommandCall(optionDefinitions: OptionDefinition[], options) {
         const args = []
-        optionDefinitions?.forEach(o => {
+        optionDefinitions?.filter(o => !o.formOnly).forEach(o => {
             if (o.type === 'confirm' && options[o.name] === true) {
                 args.push(`--${paramCase(o.name)}`)
             } else if (this.wantValue(o) && options[o.name] !== undefined) {
