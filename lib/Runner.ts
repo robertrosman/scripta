@@ -36,7 +36,7 @@ export class Runner {
   }
 
   private getFileList() {
-    const files = []
+    const files = []
     if (process.argv[2] && fs.existsSync(process.argv[2]) && fs.statSync(process.argv[2])?.isFile()) {
       const absolutePath = path.resolve(process.argv[2])
       files.push(path.relative(this.scriptsPath, absolutePath))
@@ -50,15 +50,20 @@ export class Runner {
 
   private async setupScripts(files: string[]) {
     for (const file of files) {
-      const generatedName = nameifyScript(path.join(this.scriptsPath, file))
-      const importedScript = await import(path.join(this.scriptsPath, file))
-      const script = (importedScript.default instanceof Script) 
-        ? importedScript.default
-        : new Script({ name: generatedName, ...importedScript })
-      script.extendContext({ __dirname })
-      const givenName = script.name
-      this.availableScripts[givenName] = script.run.bind(script)
-      this.argumentParser.registerScript(script, this.availableScripts[givenName])
+      try {
+        const generatedName = nameifyScript(path.join(this.scriptsPath, file))
+        const importedScript = await import(path.join(this.scriptsPath, file))
+        const script = (importedScript.default instanceof Script)
+          ? importedScript.default
+          : new Script({ name: generatedName, ...importedScript })
+        script.extendContext({ __dirname })
+        const givenName = script.name
+        this.availableScripts[givenName] = script.run.bind(script)
+        this.argumentParser.registerScript(script, this.availableScripts[givenName])
+      }
+      catch (err) {
+        console.log(err)
+      }
     }
   }
 
