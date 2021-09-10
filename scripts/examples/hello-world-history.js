@@ -1,3 +1,4 @@
+#!/usr/bin/env scripta
 import { Script } from 'scripta'
 
 export default new Script({
@@ -5,12 +6,18 @@ export default new Script({
 
   options: (store) => [
     {
-      name: 'target',
+      name: 'name',
       type: 'autocomplete',
       message: 'Who do you want to greet?',
       choices: store.history,
       suggestOnly: true,
       validate: (val) => val && val.length > 0
+    },
+    {
+      name: 'confirm',
+      type: 'confirm',
+      message: 'No better imagination huh?',
+      when: (answers) => answers.name === 'world'
     }
   ],
 
@@ -18,9 +25,9 @@ export default new Script({
     history: []
   },
 
-  command: async ({ target }, { store }) => {
-    if (!store.history.includes(target)) store.history.push(target)
-    console.log(`Hello ${target}`)
+  command: async ({ name }, { store }) => {
+    if (!store.history.includes(name)) store.history.push(name)
+    console.log(`Hello ${name}!`)
   }
 
 })
