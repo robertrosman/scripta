@@ -86,7 +86,6 @@ describe('Script.js', () => {
             script.setupOptions()
 
             expect(script.options.testData).toBe("value in store")
-            expect(script.definition.options.length).toBe(1)
         })
 
         test('set default value from store if storeDefault is true', async () => {

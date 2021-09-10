@@ -49,7 +49,7 @@ export class SmartScriptDefinition implements ScriptDefinition {
         return ((typeof this.optionsSource === 'function')
             ? this.optionsSource(this.script.store, this.script.options)
             : this.optionsSource ?? []
-        ).filter(o => !this.removedOptions.includes(o.name))
+        )
     }
 
     get setupOnceOptions(): OptionDefinition[] {
@@ -59,9 +59,4 @@ export class SmartScriptDefinition implements ScriptDefinition {
     get storeDefaultOptions(): OptionDefinition[] {
         return this.options?.filter(o => o.storeDefault === true)
     }
-
-    removeOption(name: string) {
-        this.removedOptions.push(name)
-    }
-
 }

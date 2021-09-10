@@ -32,9 +32,13 @@ export class Script {
     async run(options: UnknownObjectStructure = {}) {
         unmuteConsole(false)
         this.options = Object.assign(this.options ?? {}, options)
+        const argumentCount = Object.keys(this.options).length
         await this.runForm()
-        const commandArguments = new ArgumentParser().generateCommandCall(this.definition.options, this.options)
-        console.log(`scripta ${this.name} ${commandArguments}\n`)
+        if (Object.keys(this.options).length - this.definition.setupOnceOptions.length > argumentCount) {
+            const optionsExceptSetupOnce = this.definition.options.filter(o => o.setupOnce !== true)
+            const commandArguments = new ArgumentParser().generateCommandCall(optionsExceptSetupOnce, this.options)
+            console.log(`Running the following script:\nscripta ${this.name} ${commandArguments}\n`)
+        }
         const result = await this.definition.command(this.options, this.context)
         Store.write(this.name, this.store)
         return result
@@ -49,9 +53,8 @@ export class Script {
 
     setupOptions() {
         if (this.options) {
-            this.definition.setupOnceOptions.filter(soo => this.store[soo.name] !== undefined).forEach(soo => {
+            this.definition.setupOnceOptions.filter(soo => this.options[soo.name] === undefined && this.store[soo.name] !== undefined).forEach(soo => {
                 this.options[soo.name] = this.store[soo.name]
-                this.definition.removeOption(soo.name)
             })
         }
 
