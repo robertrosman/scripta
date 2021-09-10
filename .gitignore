@@ -3,3 +3,4 @@ node_modules
 store.json
 .gitignore
 dist/build
+.DS_Store
