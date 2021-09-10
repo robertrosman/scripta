@@ -8,7 +8,7 @@
     "scripta": "./dist/cli.js"
   },
   "scripts": {
-    "start": "npm run build && node dist/cli.js examples/hello-world --target world",
+    "start": "npm run build && node dist/cli.js examples/hello-world-options --name world",
     "build": "npm run clean && tsc",
     "build:watch": "npm run clean && tsc --watch",
     "clean": "rm -r dist/build",
@@ -45,7 +45,7 @@
     "@types/node": "^16.7.6",
     "babel-jest": "^27.1.0",
     "jest": "^27.0.0",
-    "mock-inquirer": "^1.0.3",
+    "mock-inquirer": "github:robertrosman/mock-inquirer",
     "rollup": "^2.56.3",
     "rollup-plugin-node-resolve": "^5.2.0",
     "rollup-plugin-uglify": "^6.0.4",

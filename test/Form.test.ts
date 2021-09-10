@@ -26,6 +26,32 @@ describe('Form', () => {
     expect(answers.second).toBe('mock answer')
   })
 
+  test('register options from arguments as answers', async () => {
+    const argumentOptions = {
+      first: "parsed already"
+    }
+    mockInquirer([{
+      second: 'mock answer'
+    }])
+
+    const answers: any = await Form.run([
+      {
+        name: 'first',
+        type: 'input',
+        message: 'First answer is already given'
+      },
+      {
+        name: 'second',
+        type: 'input',
+        message: 'Second answer is mocked',
+        when: (answers) => answers.first === "parsed already"
+      },
+    ], argumentOptions)
+
+    expect(answers.first).toBe('parsed already')
+    expect(answers.second).toBe('mock answer')
+  })
+
   test('generates source if choices is given', async () => {
     const questions: any = [
       {

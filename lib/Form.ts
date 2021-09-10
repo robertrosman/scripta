@@ -6,10 +6,8 @@ import { OptionDefinition } from './ScriptDefinition'
 
 export class Form {
   static async run(questions: OptionDefinition[], answers = {}): Promise<Answers> {
-    const unansweredQuestions = questions.filter(o => answers[o.name] === undefined)
-    this.generateAutocompleteSource(unansweredQuestions)
-    const additionalAnswers = await inquirer.prompt(unansweredQuestions)
-    return Object.assign({}, answers, additionalAnswers)
+    this.generateAutocompleteSource(questions)
+    return await inquirer.prompt(questions, answers)
   }
 
   static generateAutocompleteSource(questions) {
