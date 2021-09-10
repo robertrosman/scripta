@@ -1,6 +1,7 @@
 import * as zx from 'zx'
 import path from 'path'
 import { Store } from './Store.js'
+import fs from 'fs'
 import { Script } from './Script.js'
 import { getFilesRecursively, __dirname, nameifyScript } from './utils.js'
 import { ArgumentParser } from './ArgumentParser.js'
@@ -53,7 +54,7 @@ export class Runner {
       const importedScript = await import(path.join(this.scriptsPath, file))
       const script = (importedScript.default instanceof Script) 
         ? importedScript.default
-        : new Script({ name: generatedName })
+        : new Script({ name: generatedName, ...importedScript })
       script.extendContext({ __dirname })
       const givenName = script.name
       this.availableScripts[givenName] = script.run.bind(script)
