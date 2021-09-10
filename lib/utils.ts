@@ -1,10 +1,19 @@
 import path from 'path'
 import fs from 'fs'
 import dirname from 'es-dirname'
+import('console.mute')
 
 export const __dirname = path.join(dirname(), '..', '..')
 
 export const scriptsPath = path.join(__dirname, 'scripts')
+
+export const muteConsole = () => (console as any).mute()
+export const unmuteConsole = (logHistory) => { 
+  const history = (console as any).resume()
+  if (logHistory) {
+    history.stdout.forEach((l: any) => console.log(l))
+  }
+}
 
 export const getFilesRecursively = (basePath: string, relativePath?: string) => {
   relativePath = relativePath || ''

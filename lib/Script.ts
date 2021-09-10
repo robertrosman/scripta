@@ -3,6 +3,7 @@ import { ArgumentParser } from "./ArgumentParser.js";
 import { Form } from "./Form.js";
 import { ScriptDefinition, SmartScriptDefinition, OptionDefinition } from "./ScriptDefinition.js";
 import { Store } from "./Store.js";
+import { unmuteConsole } from "./utils.js";
 
 interface Context {
     store?: UnknownObjectStructure;
@@ -29,6 +30,7 @@ export class Script {
     }
 
     async run(options: UnknownObjectStructure = {}) {
+        unmuteConsole(false)
         this.options = Object.assign(this.options ?? {}, options)
         await this.runForm()
         const commandArguments = new ArgumentParser().generateCommandCall(this.definition.options, this.options)

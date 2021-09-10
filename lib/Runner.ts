@@ -1,9 +1,8 @@
-import * as zx from 'zx'
+import('zx')
 import path from 'path'
-import { Store } from './Store.js'
 import fs from 'fs'
 import { Script } from './Script.js'
-import { getFilesRecursively, __dirname, nameifyScript } from './utils.js'
+import { getFilesRecursively, __dirname, nameifyScript, muteConsole, unmuteConsole } from './utils.js'
 import { ArgumentParser } from './ArgumentParser.js'
 import { Form } from './Form.js'
 
@@ -22,14 +21,18 @@ export class Runner {
     try {
       const files = this.getFileList()
       await this.setupScripts(files)
+      muteConsole()
       this.argumentParser.parse(process.argv)
     } catch (err) {
       if (err.code === 'commander.helpDisplayed') {
+        unmuteConsole(true)
         process.exit(0)
       } else if (err.code === 'commander.help') {
+        unmuteConsole(false)
         const script = await this.resolveScript(this.availableScripts)
         this.availableScripts[script]({})
       } else {
+        unmuteConsole(true)
         console.error(err)
       }
     }
