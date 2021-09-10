@@ -1,7 +1,7 @@
 {
   "name": "scripta",
   "version": "1.0.0",
-  "description": "scripta script executor makes it easy to manage and run scripts for any kind of automation",
+  "description": "Manage and run your command line scripts like a boss",
   "main": "./dist/index.js",
   "exports": "./dist/index.js",
   "bin": {
