@@ -1,8 +1,10 @@
 import { Script } from 'scripta'
-import fs from 'fs/promises'
+import fs from 'fs'
 import { constants } from 'fs'
 import path from 'path'
 import { paramCase } from 'change-case'
+
+const nameifyScript = (name) => name.split('/').map(s => paramCase(s)).join('/')
 
 export default new Script({
   name: 'add-script',
@@ -23,11 +25,18 @@ export default new Script({
   ],
 
   command: async ({ name, editor }, { __dirname }) => {
-    const filename = `${paramCase(name)}.js`
+    const filename = `${nameifyScript(name)}.js`
     const source = path.join(__dirname, 'lib', 'boilerplate.js')
     const destination = path.join(__dirname, 'scripts', filename)
-    await fs.copyFile(source, destination, constants.COPYFILE_EXCL)
-      .catch(err => console.log('Script already exists, opening existing script'))
+    if (fs.existsSync(destination)) {
+      console.log('Script already exists, opening existing script')
+    }
+    else {
+      const buffer = await fs.promises.readFile(source)
+      const newBody = buffer.toString().replace('__SCRIPT_NAME__', nameifyScript(name))
+      await fs.promises.writeFile(destination, newBody)
+    }
+    await $`chmod +x ${destination}`
     await $`${editor} ${destination}`
   }
 })
