@@ -1,12 +1,37 @@
 {
   "name": "scripta",
-  "version": "0.1",
+  "version": "1.0.1",
   "description": "Manage and run your javascript command line scripts like a boss",
+  "keywords": [
+    "script runner",
+    "command line",
+    "options parser",
+    "script manager"
+  ],
+  "homepage": "https://github.com/robertrosman/scripta",
+  "bugs": {
+    "url": "https://github.com/robertrosman/scripta/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/robertrosman/scripta.git"
+  },
+  "author": "Robert Rosman <robertrosman@gmx.com>",
+  "private": false,
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "engineStrict": true,
   "main": "./dist/index.js",
   "exports": "./dist/index.js",
   "bin": {
     "scripta": "./dist/cli.js"
   },
+  "files": [
+    "/dist",
+    "/scripts/examples",
+    "/scripts/add-script.js"
+  ],
   "scripts": {
     "start": "npm run build && node dist/cli.js examples/hello-world-options --name world",
     "build": "npm run clean && tsc",
@@ -16,9 +41,9 @@
     "test:watch": "jest --watch",
     "test:clear": "jest --clearCache",
     "lint": "standard",
-    "lint:fix": "standard --fix"
+    "lint:fix": "standard --fix",
+    "prepare": "npm run test && npm run build && npm login"
   },
-  "author": "Robert Rosman",
   "license": "ISC",
   "type": "module",
   "dependencies": {
