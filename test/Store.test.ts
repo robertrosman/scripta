@@ -1,9 +1,9 @@
 import { Store } from '../lib/Store'
 
 import fs from 'fs';
+jest.mock('fs')
+const mockFs = fs as jest.Mocked<typeof fs>;
 let fsMockData: any = {}
-
-let fsSpy = { readFileSync: null, writeFileSync: null};
 
 describe('Store', () => {
     beforeEach(() => {
@@ -15,8 +15,8 @@ describe('Store', () => {
             }
         }
         Store.cache = Object.assign({}, fsMockData)
-        fsSpy.readFileSync = jest.spyOn(fs, 'readFileSync').mockImplementation((filename) => JSON.stringify(fsMockData))
-        fsSpy.writeFileSync = jest.spyOn(fs, 'writeFileSync').mockImplementation((filename, data) => { fsMockData = JSON.parse(data.toString()); })
+        mockFs.readFileSync.mockImplementation((filename) => JSON.stringify(fsMockData))
+        mockFs.writeFileSync.mockImplementation((filename, data) => { fsMockData = JSON.parse(data.toString()); })
     });
 
     test('read returns correct data', async () => {
@@ -52,6 +52,6 @@ describe('Store', () => {
         Store.read('test')
         Store.read('test')
 
-        expect(fsSpy.readFileSync).toHaveBeenCalledTimes(1)
+        expect(mockFs.readFileSync).toHaveBeenCalledTimes(1)
     })
 })
