@@ -5,6 +5,7 @@ import { Script } from './Script.js'
 import { getFilesRecursively, __dirname, nameifyScript, muteConsole, unmuteConsole } from './utils.js'
 import { ArgumentParser } from './ArgumentParser.js'
 import { Form } from './Form.js'
+import { pathToFileURL } from 'url'
 
 export class Runner {
   availableScripts: object
@@ -55,7 +56,8 @@ export class Runner {
     for (const file of files) {
       try {
         const generatedName = nameifyScript(path.join(this.scriptsPath, file))
-        const importedScript = await import(path.join(this.scriptsPath, file))
+        const url = pathToFileURL(path.join(this.scriptsPath, file))
+        const importedScript = await import(url.href)
         const script = (importedScript.default instanceof Script)
           ? importedScript.default
           : new Script({ name: generatedName, ...importedScript })
