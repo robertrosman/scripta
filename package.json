@@ -1,7 +1,7 @@
 {
   "name": "scripta",
-  "version": "1.0.0",
-  "description": "Manage and run your command line scripts like a boss",
+  "version": "0.1",
+  "description": "Manage and run your javascript command line scripts like a boss",
   "main": "./dist/index.js",
   "exports": "./dist/index.js",
   "bin": {
