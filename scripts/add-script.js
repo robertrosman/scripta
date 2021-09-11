@@ -26,7 +26,7 @@ export default new Script({
 
   command: async ({ name, editor }, { __dirname }) => {
     const filename = `${nameifyScript(name)}.js`
-    const source = path.join(__dirname, 'lib', 'boilerplate.js')
+    const source = path.join(__dirname, 'dist', 'build', 'boilerplate.js')
     const destination = path.join(__dirname, 'scripts', filename)
     if (fs.existsSync(destination)) {
       console.log('Script already exists, opening existing script')
