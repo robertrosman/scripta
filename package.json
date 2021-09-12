@@ -1,6 +1,6 @@
 {
   "name": "scripta",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Manage and run your javascript command line scripts like a boss",
   "keywords": [
     "script runner",
