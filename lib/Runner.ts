@@ -22,6 +22,7 @@ export class Runner {
     try {
       const files = this.getFileList()
       await this.setupScripts(files)
+      this.argumentParser.setupTabCompleter()
       muteConsole()
       this.argumentParser.parse(process.argv)
     } catch (err) {

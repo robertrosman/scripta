@@ -1,7 +1,8 @@
 import { paramCase } from 'change-case'
 import { Command, Option } from 'commander'
-import { Script } from './Script'
+import { Script } from './Script.js'
 import { OptionDefinition } from './ScriptDefinition'
+import { TabCompleter } from './TabCompleter.js'
 
 export class ArgumentParser {
     program: Command
@@ -57,6 +58,10 @@ export class ArgumentParser {
             }
         })
         return args.join(' ')
+    }
+
+    setupTabCompleter() {
+        TabCompleter.registerCompletions(this.program)
     }
 
     wantValue(option) {

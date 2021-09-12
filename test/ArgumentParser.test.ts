@@ -1,4 +1,5 @@
 import stringArgv from 'string-argv'
+import { TabCompleter } from '../lib/TabCompleter'
 import { ArgumentParser } from '../lib/ArgumentParser'
 import { Script } from '../lib/Script'
 
@@ -149,5 +150,16 @@ describe('generateCommandCall', () => {
     // console.log(commandArguments)  // Try this to see for yourself
     expect(commandArguments).toBe('')
   })
-
 })
+
+describe('setupTabCompleter', () => {
+  test('run TabCompleter.registerCompletions with this.program', async () => {
+    const spy = jest.spyOn(TabCompleter, 'registerCompletions').mockImplementation()
+    const parser = new ArgumentParser()
+    parser.setupTabCompleter()
+
+    expect(spy).toHaveBeenCalledTimes(1)
+    expect(spy.mock.calls[0][0]).toBe(parser.program)
+  })
+})
+
