@@ -7,7 +7,7 @@ export const __dirname = path.join(dirname(), '..', '..')
 
 export const scriptsPath = path.join(__dirname, 'scripts')
 
-export const muteConsole = () => (console as any).mute()
+export const muteConsole = () => (console as any).mute({ keepNewLines: true })
 export const unmuteConsole = (logHistory) => { 
   const history = (console as any).resume()
   if (logHistory) {
