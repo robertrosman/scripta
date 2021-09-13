@@ -43,7 +43,8 @@ export class ArgumentParser {
         optionString += `--${paramCase(option.name)}`
         if (this.wantValue(option)) optionString += ` <${option.value ?? 'value'}>`
         const newOption = new Option(optionString, option.message)
-        if (option.choices) newOption.choices(option.choices)
+        if (Array.isArray(option.choices)) newOption.choices(option.choices)
+        else if (typeof option.choices === 'function') (newOption as any).argChoicesFunction = option.choices
         return newOption
     }
 
@@ -61,7 +62,7 @@ export class ArgumentParser {
     }
 
     setupTabCompleter() {
-        TabCompleter.registerCompletions(this.program)
+        TabCompleter.registerCompletions(this)
     }
 
     wantValue(option) {

@@ -43,7 +43,7 @@
     "lint": "standard",
     "lint:fix": "standard --fix",
     "prepublishOnly": "npm run test && npm run build && npm login",
-    "postinstall": "scripta --setup-shell-init-file"
+    "postinstall": "node ./dist/cli.js --setup-shell-init-file"
   },
   "license": "ISC",
   "type": "module",
@@ -58,6 +58,7 @@
     "inquirer-autocomplete-prompt": "^1.4.0",
     "lodash": "^4.17.21",
     "omelette": "github:robertrosman/omelette",
+    "string-argv": "^0.3.1",
     "zx": "^3.1.0"
   },
   "devDependencies": {
@@ -72,7 +73,6 @@
     "jest": "^27.0.0",
     "mock-inquirer": "github:robertrosman/mock-inquirer",
     "standard": "^16.0.3",
-    "string-argv": "^0.3.1",
     "ts-jest": "^27.0.5",
     "ts-node": "^10.2.1",
     "typescript": "^4.4.2"

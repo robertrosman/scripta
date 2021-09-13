@@ -153,13 +153,13 @@ describe('generateCommandCall', () => {
 })
 
 describe('setupTabCompleter', () => {
-  test('run TabCompleter.registerCompletions with this.program', async () => {
+  test('run TabCompleter.registerCompletions with this', async () => {
     const spy = jest.spyOn(TabCompleter, 'registerCompletions').mockImplementation()
     const parser = new ArgumentParser()
     parser.setupTabCompleter()
 
     expect(spy).toHaveBeenCalledTimes(1)
-    expect(spy.mock.calls[0][0]).toBe(parser.program)
+    expect(spy.mock.calls[0][0]).toBe(parser)
   })
 })
 
