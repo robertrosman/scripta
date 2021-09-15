@@ -11,10 +11,10 @@ const parseOptions = (argv, options) => {
   return parser.parse(argv)
 }
 
-describe('ArgumentRegistrator', () => {
+describe('ArgumentParser', () => {
   test('returns object', async () => {
-    const argumentRegistrator = new ArgumentParser()
-    expect(typeof argumentRegistrator).toBe('object')
+    const argumentParser = new ArgumentParser()
+    expect(typeof argumentParser).toBe('object')
   })
 
   test('returns true test option property if found in argv', async () => {
