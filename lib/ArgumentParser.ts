@@ -1,7 +1,8 @@
 import { paramCase } from 'change-case'
 import { Command, Option } from 'commander'
-import { Script } from './Script'
+import { Script } from './Script.js'
 import { OptionDefinition } from './ScriptDefinition'
+import { TabCompleter } from './TabCompleter.js'
 
 export class ArgumentParser {
     program: Command
@@ -41,7 +42,8 @@ export class ArgumentParser {
         optionString += `--${paramCase(option.name)}`
         if (this.wantValue(option)) optionString += ` <${option.value ?? 'value'}>`
         const newOption = new Option(optionString, option.message)
-        if (option.choices) newOption.choices(option.choices)
+        if (Array.isArray(option.choices)) newOption.choices(option.choices)
+        else if (typeof option.choices === 'function') (newOption as any).argChoicesFunction = option.choices
         return newOption
     }
 
@@ -56,6 +58,10 @@ export class ArgumentParser {
             }
         })
         return args.join(' ')
+    }
+
+    setupTabCompleter() {
+        TabCompleter.registerCompletions(this)
     }
 
     wantValue(option) {
