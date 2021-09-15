@@ -32,7 +32,6 @@ export class ArgumentParser {
             this.program.parse(argv)
             return this.program.opts()
         } catch (err) {
-            if (err.code === 'commander.helpDisplayed') process.exit()
             throw err
         }
     }
