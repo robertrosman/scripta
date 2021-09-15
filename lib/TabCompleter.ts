@@ -14,14 +14,11 @@ export class TabCompleter {
 
     try {
       if (~process.argv.indexOf('--setup-shell-init-file')) {
-        completion.cleanupShellInitFile()
         completion.setupShellInitFile()
-        process.exit()
       }
 
       if (~process.argv.indexOf('--cleanup-shell-init-file')) {
         completion.cleanupShellInitFile()
-        process.exit()
       }
     }
     catch (err) {

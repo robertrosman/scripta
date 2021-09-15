@@ -43,7 +43,7 @@
     "lint": "standard",
     "lint:fix": "standard --fix",
     "prepublishOnly": "npm run test && npm run build && npm login",
-    "postinstall": "node ./dist/cli.js --setup-shell-init-file"
+    "postinstall": "node ./dist/cli.js --cleanup-shell-init-file && node ./dist/cli.js --setup-shell-init-file"
   },
   "license": "ISC",
   "type": "module",
