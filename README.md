@@ -205,11 +205,12 @@ Sometimes you might want to use data from the store when you generate your optio
 
 ### Tab completion
 
-Tab completion should work out of the box. If not, try to run this command:
+After restarting the terminal you used to install scripta, tab completion should work out of the box. If not, try to run this command:
 
     $ scripta --setup-shell-init-file
 
-and then restart your terminal. Tab completion will suggest what script to run, available options, and also choices specified on specific options.
+and then restart your terminal. If it's still not working, try to [follow these steps](https://github.com/f/omelette#manual-installation), but replace `myprogram` with `scripta`. Tab completion will suggest what script to run, available options, and also choices specified on specific options.
+
 
 Contribute
 ----------
