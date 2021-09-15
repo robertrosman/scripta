@@ -22,7 +22,12 @@ Now you can run `scripta` to see what scripts you have available and run them.
     $ scripta examples/hello-world --help
 
     # run a script with specific options
-    $ scripta examples/hello-world --target "John"
+    $ scripta examples/hello-world-minimal --name "John"
+
+    # you can also tab your way through life
+    $ scripta ex<tab> -> scripta examples/
+    $ scripta examples/hello-world-minimal <tab> -> scripta examples/hello-world-minimal --name
+    # ...and so on
 
 
 Create new scripts
@@ -198,6 +203,13 @@ Sometimes you might want to use data from the store when you generate your optio
         }
     ],
 
+### Tab completion
+
+Tab completion should work out of the box. If not, try to run this command:
+
+    $ scripta --setup-shell-init-file
+
+and then restart your terminal. Tab completion will suggest what script to run, available options, and also choices specified on specific options.
 
 Contribute
 ----------
@@ -205,7 +217,7 @@ Contribute
 Contributions are more than welcome!
 
 
-Attribution
------------
+Credits
+-------
 
-This project relies heavily on [Inquirer.js](https://github.com/SBoudrias/Inquirer.js) and [Commander.js](https://github.com/tj/commander.js). Thanks a ton to all who have invested in those amazing libraries!
+This project relies heavily on [Inquirer.js](https://github.com/SBoudrias/Inquirer.js), [Commander.js](https://github.com/tj/commander.js) and [Omelette](https://github.com/f/omelette). Thanks a ton to all who have invested in those amazing libraries!
