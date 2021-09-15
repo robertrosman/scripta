@@ -57,7 +57,7 @@
     "inquirer": "^8.1.2",
     "inquirer-autocomplete-prompt": "^1.4.0",
     "lodash": "^4.17.21",
-    "omelette": "github:robertrosman/omelette",
+    "omelette": "^0.4.16",
     "string-argv": "^0.3.1",
     "zx": "^3.1.0"
   },
