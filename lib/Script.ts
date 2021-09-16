@@ -1,4 +1,4 @@
-import inquirer from "inquirer";
+import chalk from "chalk";
 import { ArgumentParser } from "./ArgumentParser.js";
 import { Form } from "./Form.js";
 import { ScriptDefinition, SmartScriptDefinition, OptionDefinition } from "./ScriptDefinition.js";
@@ -37,7 +37,7 @@ export class Script {
         if (Object.keys(this.options).length - this.definition.setupOnceOptions.length > argumentCount) {
             const optionsExceptSetupOnce = this.definition.options.filter(o => o.setupOnce !== true)
             const commandArguments = new ArgumentParser().generateCommandCall(optionsExceptSetupOnce, this.options)
-            console.log(`Running the following script:\nscripta ${this.name} ${commandArguments}\n`)
+            console.log(chalk.gray(`Running the following script:\nscripta ${this.name} ${commandArguments}\n`))
         }
         const result = await this.definition.command(this.options, this.context)
         Store.write(this.name, this.store)
