@@ -1,6 +1,6 @@
 #!/usr/bin/env scripta
 import { Script } from 'scripta'
-import helloWorld from './hello-world-options.js'
+import helloWorld from './hello-world.js'
 
 export default new Script({
   name: "examples/hello-world-import",

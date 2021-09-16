@@ -96,13 +96,14 @@ You can set up your options just like you would with [inquirer.js questions](htt
 
 The following fields are also available on all options:
 
-| Field         | Type     | Default value | Description
-| ------------- | -------- | ------------- | -----------
-| storeDefault  | boolean  | false         | Store the last used value and set as default the next time the script is executed.
-| setupOnce     | boolean  | false         | Store the used value and use for all coming executions. Will not be prompted again, but the value can be overwritten by explicitly using the command line argument.
-| argumentOnly  | boolean  | false         | Only add this option as a command line argument, don't ask for input.
-| formOnly      | boolean  | false         | Only ask this question, don't add it as a command line argument.
-| shorthand     | string   | undefined     | Can be used to register a shorthand property for the command line argument. For example `-n` might be set as shorthand to the `--name` option above.
+| Field               | Type     | Default value | Description
+| ------------------- | -------- | ------------- | -----------
+| storeDefault        | boolean  | false         | Store the last used value and set as default the next time the script is executed.
+| setupOnce           | boolean  | false         | Store the used value and use for all coming executions. Will not be prompted again, but the value can be overwritten by explicitly using the command line argument.
+| positionalArgument  | boolean  | false         | Give the option a fixed position, and skip the double-dash-option before. See [add-script](https://github.com/robertrosman/scripta/blob/main/scripts/add-script.js) for example, no need to specify --name before the new script name. The position of the positional argument can be before or after other options, but every positional argument must be given in the same order they are declared as options.
+| argumentOnly        | boolean  | false         | Only add this option as a command line argument, don't ask for input.
+| formOnly            | boolean  | false         | Only ask this question, don't add it as a command line argument.
+| shorthand           | string   | undefined     | Can be used to register a shorthand property for the command line argument. For example `-n` might be set as shorthand to the `--name` option above.
 
 ### The Store
 

@@ -1,4 +1,4 @@
-import { Command, Option } from 'commander';
+import { Argument, Command, Option } from 'commander';
 import { ArgumentParser } from '../lib/ArgumentParser';
 import { TabCompleter } from '../lib/TabCompleter'
 
@@ -10,7 +10,7 @@ const getSuggestions = (program, argString) => {
     return TabCompleter.getSuggestions(parser, argString, fragment)
 }
 
-describe('TabCompleter getReply', () => {
+describe('TabCompleter getSuggestions', () => {
     test('return commands if first fragment', async () => {
         const program = new Command()
             .addCommand(new Command('no-options'))
@@ -56,6 +56,120 @@ describe('TabCompleter getReply', () => {
 
         expect(suggestions).toEqual(choices)
     })
+
+    test('do not return choices if an option without choices is preceding', () => {
+        const program = new Command()
+            .addCommand(new Command('one-list').option('--list <value>'))
+        const suggestions = getSuggestions(program, 'scripta\ one-list\ --list')
+
+        expect(suggestions).toEqual([])
+    })
+
+    test('do not return choices if an option without choices is preceding (even if it has arguments)', () => {
+        const program = new Command()
+            .addCommand(new Command('one-list')
+                .argument('[arg]')
+                .option('--list <value>')
+            )
+        const suggestions = getSuggestions(program, 'scripta\ one-list\ argValue --list')
+
+        expect(suggestions).toEqual([])
+    })
+
+
+    test('return choices if a positional argument has choices', () => {
+        const choices = ['first', 'second', 'third']
+        const program = new Command()
+            .addCommand(new Command('one-list')
+                .option("-c, --confirm")
+                .addOption(new Option('--list <value>').choices(choices))
+                .addArgument(new Argument('[myArgument]').choices(choices))
+            )
+
+        const suggestions = getSuggestions(program, 'scripta\ one-list\ --list\ first\ --confirm')
+
+        expect(suggestions).toEqual(choices)
+    })
+
+    test('return choices if a positional argument is incompletely filled', () => {
+        const choices = ['first', 'second', 'third']
+        const choices2 = ['one', 'two', 'three']
+        const program = new Command()
+            .addCommand(new Command('one-list')
+                .option("-c, --confirm")
+                .addOption(new Option('--list <value>').choices(choices))
+                .addArgument(new Argument('[firstArgument]').choices(choices))
+                .addArgument(new Argument('[secondArgument]').choices(choices2))
+            )
+
+        const suggestions = getSuggestions(program, 'scripta\ one-list\ --list\ first\ --confirm\ first\ thr')
+
+        expect(suggestions).toEqual(choices2)
+    })
+
+
+    test('return choices and remaining options', () => {
+        const choices = ['first', 'second', 'third']
+        const program = new Command()
+            .addCommand(new Command('one-list')
+                .option("-c, --confirm")
+                .addOption(new Option('--list <value>').choices(choices))
+                .addArgument(new Argument('[myArgument]').choices(choices))
+            )
+
+        const suggestions = getSuggestions(program, 'scripta\ one-list')
+
+        expect(suggestions).toEqual(expect.arrayContaining(['--list', '--confirm', ...choices]))
+    })
+
+    test('return only options after arguments are satisfied', () => {
+        const choices = ['first', 'second', 'third']
+        const program = new Command()
+            .addCommand(new Command('one-list')
+                .option("-c, --confirm")
+                .addOption(new Option('--list <value>').choices(choices))
+                .addArgument(new Argument('[myArgument]').choices(choices))
+            )
+
+        const suggestions = getSuggestions(program, 'scripta\ one-list\ first')
+
+        expect(suggestions).toEqual(expect.arrayContaining(['--list', '--confirm']))
+    })
+
+
+    test('run choice function if a positional argument has one', () => {
+        const choices = (answers) => ['first', 'second', 'third', 'forth'].filter(choice => choice !== answers.list)
+        const argument = new Argument('[myArgument]');
+        (argument as any).argChoicesFunction = choices
+        const program = new Command()
+            .addCommand(new Command('one-list')
+                .option("-c, --confirm")
+                .addOption(new Option('--list <value>').choices(['first']))
+                .addArgument(argument)
+            )
+
+        const suggestions = getSuggestions(program, 'scripta\ one-list\ --list\ first\ --confirm')
+
+        expect(suggestions).toEqual(['second', 'third', 'forth'])
+    })
+
+
+    test('return correct choices if several positional arguments has choices', () => {
+        const choices1 = ['first', 'second', 'third']
+        const choices2 = ['one', 'two', 'three']
+        const program = new Command()
+            .addCommand(new Command('one-list')
+                .option("-c, --confirm")
+                .addOption(new Option('--list <value>').choices(choices1))
+                .addArgument(new Argument('[firstArgument]').choices(choices1))
+                .addArgument(new Argument('[secondArgument]').choices(choices2))
+            )
+
+        const suggestions = getSuggestions(program, 'scripta\ one-list\ --list\ first\ --confirm\ first\ ')
+
+        expect(suggestions).toEqual(choices2)
+    })
+
 
     test('return empty list if invalid command is given', () => {
         const program = new Command()

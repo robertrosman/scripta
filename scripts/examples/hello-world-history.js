@@ -11,7 +11,8 @@ export default new Script({
       message: 'Who do you want to greet?',
       choices: store.history,
       suggestOnly: true,
-      validate: (val) => val && val.length > 0
+      validate: (val) => val && val.length > 0,
+      positionalArgument: true
     },
     {
       name: 'confirm',
