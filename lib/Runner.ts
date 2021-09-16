@@ -6,6 +6,7 @@ import { getFilesRecursively, __dirname, nameifyScript, muteConsole, unmuteConso
 import { ArgumentParser } from './ArgumentParser.js'
 import { Form } from './Form.js'
 import { pathToFileURL } from 'url'
+import { Command } from 'commander'
 
 export class Runner {
   availableScripts: object
@@ -25,6 +26,7 @@ export class Runner {
       this.argumentParser.setupTabCompleter()
       muteConsole()
       this.argumentParser.parse(process.argv)
+      unmuteConsole(true)
     } catch (err) {
       if (err.code === 'commander.helpDisplayed') {
         unmuteConsole(true)
@@ -64,7 +66,11 @@ export class Runner {
           : new Script({ name: generatedName, ...importedScript })
         script.extendContext({ __dirname })
         const givenName = script.name
-        this.availableScripts[givenName] = script.run.bind(script)
+        this.availableScripts[givenName] = (...args) => {
+          unmuteConsole(true)
+          const options = ArgumentParser.mergeArgumentsAndOptions(args)
+          script.run(options)
+        }
         this.argumentParser.registerScript(script, this.availableScripts[givenName])
       }
       catch (err) {

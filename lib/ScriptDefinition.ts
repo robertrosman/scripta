@@ -6,6 +6,7 @@ export interface OptionDefinition extends inquirer.Question<inquirer.Answers> {
     setupOnce?: boolean;
     argumentOnly?: boolean;
     formOnly?: boolean;
+    positionalArgument?: boolean;
     shorthand?: string;
     value?: string;
 }

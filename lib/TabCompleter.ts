@@ -1,7 +1,7 @@
 import omelette from 'omelette'
 import { parseArgsStringToArgv } from 'string-argv'
-import { Command, Option } from "commander"
-import { ArgumentParser } from './ArgumentParser';
+import { Argument, Command, Option } from "commander"
+import { ArgumentParser } from './ArgumentParser.js';
 
 export class TabCompleter {
   static registerCompletions(argumentParser: ArgumentParser): void {
@@ -22,7 +22,7 @@ export class TabCompleter {
       }
     }
     catch (err) {
-      console.log(err)
+      console.error(err)
     }
   }
 
@@ -37,8 +37,10 @@ export class TabCompleter {
     }
     const options: Option[] = (command as any).options
     const initiatedOption = options.find(o => o.long === args[fragment - 1])
+    const remainingOptions = options.filter(o => !args.includes(o.long) && !args.includes(o.short)).map(o => o.long)
+
     if (initiatedOption && (initiatedOption as any).argChoicesFunction !== undefined) {
-      let parsedOptions
+      let parsedOptions: object
       argumentParser.program.commands.forEach(c => c.action((options) => parsedOptions = options))
       argumentParser.parse([ 'dummy', ...args].filter((value, index) => index !== fragment ))
       return (initiatedOption as any).argChoicesFunction(parsedOptions)
@@ -46,8 +48,22 @@ export class TabCompleter {
     else if (initiatedOption && initiatedOption.argChoices !== undefined) {
       return initiatedOption.argChoices
     }
+    else if (initiatedOption && initiatedOption.required) {
+      return []
+    }
+    else if ((command as any)._args?.length > 0) {
+      let parsedOptions: object
+      argumentParser.program.commands.forEach(c => c.action((...args) => parsedOptions = ArgumentParser.mergeArgumentsAndOptions(args)))
+      argumentParser.parse(['dummy', ...args])
+      const argument = (command as any)._args.find(a => parsedOptions[a.name()] === undefined)
+      const argumentChoices = (argument?.argChoicesFunction === undefined) ? argument?.argChoices : argument?.argChoicesFunction(parsedOptions)
+      if (!argumentChoices) {
+        return remainingOptions
+      }
+      return [...argumentChoices, ...remainingOptions]
+    }
     else {
-      return options.filter(o => !args.includes(o.long) && !args.includes(o.short)).map(o => o.long)
+      return remainingOptions
     }
   }
 }

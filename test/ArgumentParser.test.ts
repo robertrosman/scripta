@@ -2,6 +2,7 @@ import stringArgv from 'string-argv'
 import { TabCompleter } from '../lib/TabCompleter'
 import { ArgumentParser } from '../lib/ArgumentParser'
 import { Script } from '../lib/Script'
+import { Command } from 'commander'
 
 const mockArgv = (args) => stringArgv(args, 'node', 'resolve-options.test.js')
 
@@ -95,8 +96,27 @@ describe('ArgumentParser', () => {
 
     expect(callback).toHaveBeenCalledTimes(1)
   })
-})
 
+  test.skip('parse maps positional arguments to their options', async () => {
+    const argv = mockArgv('Robert Rosman')
+    const options = parseOptions(argv, [{
+      name: 'firstname',
+      message: 'Please enter your firstname',
+      type: 'input',
+      positionalArgument: true
+    },
+    {
+      name: 'lastname',
+      message: 'Please enter your lastname',
+      type: 'input',
+      positionalArgument: true
+    }]
+    )
+
+    expect(options.firstname).toBe("Robert")
+    expect(options.lastname).toBe("Rosman")
+  })
+})
 describe('generateCommandCall', () => {
   test('returns string with given argument bool value', async () => {
     const questions = [{
@@ -160,6 +180,36 @@ describe('setupTabCompleter', () => {
 
     expect(spy).toHaveBeenCalledTimes(1)
     expect(spy.mock.calls[0][0]).toBe(parser)
+  })
+})
+
+describe('mergeArgumentsAndOptions', () => {
+  test('should take arguments and turn into options', async () => {
+    const program = new Command()
+        .argument('[firstname]')
+        .argument('[lastname]')
+
+    const options = ArgumentParser.mergeArgumentsAndOptions(['Robert', 'Rosman', program])
+
+    expect(options.firstname).toBe('Robert')
+    expect(options.lastname).toBe('Rosman')
+  })
+
+  test('should take arguments and merge with given options', async () => {
+    const program = new Command()
+        .argument('[firstname]')
+        .argument('[lastname]')
+
+    const options = ArgumentParser.mergeArgumentsAndOptions([
+        'Robert', 
+        'Rosman', 
+        { parsedOptions: 'already fixed'}, 
+        program
+    ])
+      
+    expect(options.firstname).toBe('Robert')
+    expect(options.lastname).toBe('Rosman')
+    expect(options.parsedOptions).toBe('already fixed')
   })
 })
 

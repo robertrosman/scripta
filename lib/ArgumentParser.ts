@@ -1,5 +1,5 @@
 import { paramCase } from 'change-case'
-import { Command, Option } from 'commander'
+import { Argument, Command, Option } from 'commander'
 import { Script } from './Script.js'
 import { OptionDefinition } from './ScriptDefinition'
 import { TabCompleter } from './TabCompleter.js'
@@ -22,8 +22,11 @@ export class ArgumentParser {
 
     addOptions(options: OptionDefinition[], command?: Command) {
         command = command ?? this.program
-        options.filter(o => !o.formOnly).forEach(o => {
+        options.filter(o => !o.formOnly && !o.positionalArgument).forEach(o => {
             command.addOption(this.generateCommanderOption(o))
+        })
+        options.filter(o => !o.formOnly && o.positionalArgument).forEach(o => {
+            command.addArgument(this.generatePositionalArgument(o))
         })
     }
 
@@ -47,6 +50,15 @@ export class ArgumentParser {
         return newOption
     }
 
+    generatePositionalArgument(option) {
+        let argumentString = ''
+        argumentString += `[${paramCase(option.name)}]`
+        const newArgument = new Argument(argumentString, option.message)
+        if (Array.isArray(option.choices)) newArgument.choices(option.choices)
+        else if (typeof option.choices === 'function') (newArgument as any).argChoicesFunction = option.choices
+        return newArgument
+    }
+
     generateCommandCall(optionDefinitions: OptionDefinition[], options) {
         const args = []
         optionDefinitions?.filter(o => !o.formOnly).forEach(o => {
@@ -62,6 +74,15 @@ export class ArgumentParser {
 
     setupTabCompleter() {
         TabCompleter.registerCompletions(this)
+    }
+
+    static mergeArgumentsAndOptions(args) {
+        const positionalArguments = args.filter(a => typeof a !== 'object')
+        const command = args.find(a => a instanceof Command)
+        const options = args.find(a => typeof a === 'object' && !(a instanceof Command)) || {}
+        let i = 0;
+        (command as any)._args.forEach(a => options[a.name()] = positionalArguments[i++])
+        return options
     }
 
     wantValue(option) {
