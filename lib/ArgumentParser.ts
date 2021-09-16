@@ -45,18 +45,28 @@ export class ArgumentParser {
         optionString += `--${paramCase(option.name)}`
         if (this.wantValue(option)) optionString += ` <${option.value ?? 'value'}>`
         const newOption = new Option(optionString, option.message)
-        if (Array.isArray(option.choices)) newOption.choices(option.choices)
-        else if (typeof option.choices === 'function') (newOption as any).argChoicesFunction = option.choices
-        return newOption
+        return this.addChoices(newOption, option)
     }
 
     generatePositionalArgument(option) {
         let argumentString = ''
         argumentString += `[${paramCase(option.name)}]`
         const newArgument = new Argument(argumentString, option.message)
-        if (Array.isArray(option.choices)) newArgument.choices(option.choices)
-        else if (typeof option.choices === 'function') (newArgument as any).argChoicesFunction = option.choices
-        return newArgument
+        return this.addChoices(newArgument, option)
+    }
+
+    addChoices(newOption, optionDefinition) {
+        if (Array.isArray(optionDefinition.choices)) {
+            newOption.choices(optionDefinition.choices)
+        }
+        else if (typeof optionDefinition.choices === 'function') {
+            newOption.argChoicesFunction = optionDefinition.choices
+        }
+        // TODO: Figure out a cleaner approach to handling invalidArgument differently on completion or actual execution!
+        if (optionDefinition.suggestOnly && !~process.argv.indexOf('--compgen')) {
+            newOption.parseArg = (arg, previous) => newOption.variadic ? newOption._concatValue(arg, previous) : arg
+        }
+        return newOption
     }
 
     generateCommandCall(optionDefinitions: OptionDefinition[], options) {

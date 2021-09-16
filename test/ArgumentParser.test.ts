@@ -62,6 +62,20 @@ describe('ArgumentParser', () => {
     expect(options.hello).toBe('world')
   })
 
+  test('accept invalid choice if suggestOnly is true', async () => {
+    const argv = mockArgv('--hello=world')
+
+    const options = parseOptions(argv, [{
+      name: 'hello',
+      type: 'list',
+      choices: ['one', 'two', 'three'],
+      suggestOnly: true
+    }])
+
+    expect(options.hello).toBe('world')
+  })
+
+
   test('do not generate arguments if formOnly is true', async () => {
     const parser = new ArgumentParser()
 
