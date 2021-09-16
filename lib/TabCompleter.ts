@@ -1,6 +1,6 @@
 import omelette from 'omelette'
 import { parseArgsStringToArgv } from 'string-argv'
-import { Argument, Command, Option } from "commander"
+import { Argument, Command, Option, OptionValues } from "commander"
 import { ArgumentParser } from './ArgumentParser.js';
 
 export class TabCompleter {
@@ -40,9 +40,7 @@ export class TabCompleter {
     const remainingOptions = options.filter(o => !args.includes(o.long) && !args.includes(o.short)).map(o => o.long)
 
     if (initiatedOption && (initiatedOption as any).argChoicesFunction !== undefined) {
-      let parsedOptions: object
-      argumentParser.program.commands.forEach(c => c.action((options) => parsedOptions = options))
-      argumentParser.parse([ 'dummy', ...args].filter((value, index) => index !== fragment ))
+      const parsedOptions = this.parseProgramOptions(argumentParser, args, fragment, true)
       return (initiatedOption as any).argChoicesFunction(parsedOptions)
     }
     else if (initiatedOption && initiatedOption.argChoices !== undefined) {
@@ -52,9 +50,7 @@ export class TabCompleter {
       return []
     }
     else if ((command as any)._args?.length > 0) {
-      let parsedOptions: object
-      argumentParser.program.commands.forEach(c => c.action((...args) => parsedOptions = ArgumentParser.mergeArgumentsAndOptions(args)))
-      argumentParser.parse(['dummy', ...args])
+      const parsedOptions = this.parseProgramOptions(argumentParser, args, fragment)
       const argument = (command as any)._args.find(a => parsedOptions[a.name()] === undefined)
       const argumentChoices = (argument?.argChoicesFunction === undefined) ? argument?.argChoices : argument?.argChoicesFunction(parsedOptions)
       if (!argumentChoices) {
@@ -65,5 +61,39 @@ export class TabCompleter {
     else {
       return remainingOptions
     }
+  }
+
+  static parseProgramOptions(argumentParser: ArgumentParser, args, fragment: number, excludeFragment = false): OptionValues {
+      try {
+        let parsedOptions: OptionValues
+        this.muteCommand(argumentParser.program)
+        argumentParser.program.commands.forEach(c => {
+          c.action((...args) => parsedOptions = ArgumentParser.mergeArgumentsAndOptions(args))
+          this.muteCommand(c)
+        })
+        argumentParser.parse(['dummy', ...args].filter((value, index) => !excludeFragment || index !== fragment ))
+        return parsedOptions
+      }
+      catch (err) {
+        if (err.code == 'commander.invalidArgument' || err.code == 'commander.unknownCommand') {
+          if(!excludeFragment) {
+            return this.parseProgramOptions(argumentParser, args, fragment, true) 
+          }
+        }
+        else if (err.code !== 'commander.help') {
+          console.error(err)
+        }
+        return {}
+      }
+  }
+
+  static muteCommand(command: Command) {
+    command
+      .exitOverride()
+      .configureOutput({
+        // Mute output from commander itself
+        writeOut: () => {},
+        writeErr: () => {},
+      })
   }
 }

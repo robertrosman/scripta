@@ -91,6 +91,23 @@ describe('TabCompleter getSuggestions', () => {
         expect(suggestions).toEqual(choices)
     })
 
+    test('return choices if a positional argument is incompletely filled', () => {
+        const choices = ['first', 'second', 'third']
+        const choices2 = ['one', 'two', 'three']
+        const program = new Command()
+            .addCommand(new Command('one-list')
+                .option("-c, --confirm")
+                .addOption(new Option('--list <value>').choices(choices))
+                .addArgument(new Argument('[firstArgument]').choices(choices))
+                .addArgument(new Argument('[secondArgument]').choices(choices2))
+            )
+
+        const suggestions = getSuggestions(program, 'scripta\ one-list\ --list\ first\ --confirm\ first\ thr')
+
+        expect(suggestions).toEqual(choices2)
+    })
+
+
     test('return choices and remaining options', () => {
         const choices = ['first', 'second', 'third']
         const program = new Command()
@@ -148,7 +165,7 @@ describe('TabCompleter getSuggestions', () => {
                 .addArgument(new Argument('[secondArgument]').choices(choices2))
             )
 
-        const suggestions = getSuggestions(program, 'scripta\ one-list\ --list\ first\ --confirm\ first')
+        const suggestions = getSuggestions(program, 'scripta\ one-list\ --list\ first\ --confirm\ first\ ')
 
         expect(suggestions).toEqual(choices2)
     })
