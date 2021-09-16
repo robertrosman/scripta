@@ -96,27 +96,8 @@ describe('ArgumentParser', () => {
 
     expect(callback).toHaveBeenCalledTimes(1)
   })
-
-  test.skip('parse maps positional arguments to their options', async () => {
-    const argv = mockArgv('Robert Rosman')
-    const options = parseOptions(argv, [{
-      name: 'firstname',
-      message: 'Please enter your firstname',
-      type: 'input',
-      positionalArgument: true
-    },
-    {
-      name: 'lastname',
-      message: 'Please enter your lastname',
-      type: 'input',
-      positionalArgument: true
-    }]
-    )
-
-    expect(options.firstname).toBe("Robert")
-    expect(options.lastname).toBe("Rosman")
-  })
 })
+
 describe('generateCommandCall', () => {
   test('returns string with given argument bool value', async () => {
     const questions = [{
