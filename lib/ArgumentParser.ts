@@ -81,7 +81,11 @@ export class ArgumentParser {
         const command = args.find(a => a instanceof Command)
         const options = args.find(a => typeof a === 'object' && !(a instanceof Command)) || {}
         let i = 0;
-        (command as any)._args.forEach(a => options[a.name()] = positionalArguments[i++])
+        (command as any)._args.forEach(a => {
+            if (positionalArguments[i] !== undefined) {
+                options[a.name()] = positionalArguments[i++]
+            }
+        })
         return options
     }
 

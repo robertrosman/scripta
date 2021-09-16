@@ -192,5 +192,21 @@ describe('mergeArgumentsAndOptions', () => {
     expect(options.lastname).toBe('Rosman')
     expect(options.parsedOptions).toBe('already fixed')
   })
+
+  test('should not add empty arguments to options', async () => {
+    const program = new Command()
+        .argument('[firstname]')
+        .argument('[lastname]')
+
+    const options = ArgumentParser.mergeArgumentsAndOptions([
+        'Robert', 
+        { parsedOptions: 'already fixed'}, 
+        program
+    ])
+      
+    expect(options.firstname).toBe('Robert')
+    expect(options.parsedOptions).toBe('already fixed')
+    expect(Object.keys(options).length).toBe(2)
+  })
 })
 
