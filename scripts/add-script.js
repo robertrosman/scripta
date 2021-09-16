@@ -13,7 +13,8 @@ export default new Script({
     {
       name: 'name',
       type: 'input',
-      message: 'Please enter the name of the new script'
+      message: 'Please enter the name of the new script',
+      positionalArgument: true
     },
     {
       name: 'editor',
