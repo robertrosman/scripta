@@ -80,6 +80,9 @@ export class ArgumentParser {
         const positionalArguments = args.filter(a => typeof a !== 'object')
         const command = args.find(a => a instanceof Command)
         const options = args.find(a => typeof a === 'object' && !(a instanceof Command)) || {}
+        if (!command) {
+            return options
+        }
         let i = 0;
         (command as any)._args.forEach(a => {
             if (positionalArguments[i] !== undefined) {

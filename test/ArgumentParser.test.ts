@@ -208,5 +208,13 @@ describe('mergeArgumentsAndOptions', () => {
     expect(options.parsedOptions).toBe('already fixed')
     expect(Object.keys(options).length).toBe(2)
   })
+
+  test('return options if no Command is given (like when resolving script manually)', async () => {
+    const options = ArgumentParser.mergeArgumentsAndOptions([
+        { parsedOptions: 'already fixed'}
+    ])
+      
+    expect(options).toEqual({ parsedOptions: 'already fixed' })
+  })
 })
 
