@@ -64,6 +64,9 @@ export class ArgumentParser {
         optionDefinitions?.filter(o => !o.formOnly).forEach(o => {
             if (o.type === 'confirm' && options[o.name] === true) {
                 args.push(`--${paramCase(o.name)}`)
+            } else if (this.wantValue(o) && o.positionalArgument && options[o.name] !== undefined) {
+                const value = JSON.stringify(options[o.name])
+                args.push(`${value}`)
             } else if (this.wantValue(o) && options[o.name] !== undefined) {
                 const value = JSON.stringify(options[o.name])
                 args.push(`--${paramCase(o.name)} ${value}`)

@@ -137,6 +137,26 @@ describe('generateCommandCall', () => {
     expect(commandArguments).toBe(`--test "\\"that's\\" right"`)
   })
 
+  test('returns string without option flag for given positional argument string value', async () => {
+    const questions = [{
+      name: 'diggingIt',
+      type: 'confirm'
+    },
+    {
+      name: 'hipLevel',
+      type: 'input',
+      positionalArgument: true
+    }]
+    const answers = { 
+      diggingIt: true,
+      hipLevel: 'cool' 
+    }
+
+    const commandArguments = new ArgumentParser().generateCommandCall(questions, answers)
+
+    expect(commandArguments).toBe(`--digging-it \"cool\"`)
+  })
+
   test('skip arguments if formOnly is true', async () => {
     const questions = [{
       name: 'test',
