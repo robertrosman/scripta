@@ -75,7 +75,7 @@ export class TabCompleter {
         return parsedOptions
       }
       catch (err) {
-        if (err.code == 'commander.invalidArgument' || err.code == 'commander.unknownCommand') {
+        if (err.code == 'commander.invalidArgument' || err.code == 'commander.unknownCommand' || err.code == 'commander.unknownOption') {
           if(!excludeFragment) {
             return this.parseProgramOptions(argumentParser, args, fragment, true) 
           }

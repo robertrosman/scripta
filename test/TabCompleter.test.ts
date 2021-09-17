@@ -107,6 +107,31 @@ describe('TabCompleter getSuggestions', () => {
         expect(suggestions).toEqual(choices2)
     })
 
+    test('return remaining options if an option is incompletely filled', () => {
+        const program = new Command()
+            .addCommand(new Command('three-confirms')
+                .option("-c1, --confirm1")
+                .option("-c2, --confirm2")
+                .option("-c3, --confirm3")
+            )
+        const suggestions = getSuggestions(program, 'scripta\ three-confirms\ --confirm1\ --conf')
+
+        expect(suggestions).toEqual(["--confirm2", "--confirm3"])
+    })
+
+    test('return remaining options if an option is incompletely filled (even if used with arguments)', () => {
+        const program = new Command()
+            .addCommand(new Command('three-confirms')
+                .argument("[myArgument]")
+                .option("-c1, --confirm1")
+                .option("-c2, --confirm2")
+                .option("-c3, --confirm3")
+            )
+        const suggestions = getSuggestions(program, 'scripta\ three-confirms\ argument\ --confirm1\ --conf')
+
+        expect(suggestions).toEqual(["--confirm2", "--confirm3"])
+    })
+
 
     test('return choices and remaining options', () => {
         const choices = ['first', 'second', 'third']
