@@ -15,10 +15,18 @@ export default new Script({
       positionalArgument: true
     },
     {
-      name: 'confirm',
+      name: 'exaggerate',
       type: 'confirm',
-      message: 'No better imagination huh?',
-      when: (answers) => answers.name === 'world'
+      message: 'Want me to be veeery friendly?',
+      argumentOnly: true
+    },
+    {
+      name: 'color',
+      type: 'list',
+      message: 'Choose a good looking color',
+      choices: [ 'default', 'black', 'red', 'green', 'yellow', 'blue', 'magenta', 'cyan', 'white', 'grey', 'redBright', 'greenBright', 'yellowBright', 'blueBright', 'magentaBright', 'cyanBright', 'whiteBright' ],
+      // when: () => chalk.supportsColor,
+      default: 'default'
     }
   ],
 
@@ -26,9 +34,15 @@ export default new Script({
     history: []
   },
 
-  command: async ({ name }, { store }) => {
+  command: async ({ name, exaggerate, color }, { store }) => {
     if (!store.history.includes(name)) store.history.push(name)
-    console.log(`Hello ${name}!`)
+    const msg = exaggerate ? `Hello my best friend ${name}, missed you sooo much!!!` : `Hello ${name}!`
+    if (!color || color === 'default') {
+      console.log(msg)
+    }
+    else {
+      console.log(chalk.keyword(color)(msg))
+    }
   }
 
 })
