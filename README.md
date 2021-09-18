@@ -3,32 +3,16 @@ Scripta
 
 Manage and run your command line scripts like a boss. Scripta will help you write, remember and run your scripts.
 
+![Screencast demo](https://raw.githubusercontent.com/robertrosman/scripta/main/assets/screencast.gif)
+
+Declare options in your scripts and run interactively or with command line arguments. Tab completion, help messages, persistence and more works out of the box!
+
 Getting started
 ---------------
 
 Install Scripta globally so you have access to the command `scripta` anywhere.
 
     $ npm i -g scripta
-
-Now you can run `scripta` to see what scripts you have available and run them. 
-
-    # explore your scripts and pick one to run
-    $ scripta
-
-    # run the script examples/hello-world
-    $ scripta examples/hello-world
-
-    # see what options a script has
-    $ scripta examples/hello-world --help
-
-    # run a script with specific options
-    $ scripta examples/hello-world-minimal --name "John"
-
-    # you can also tab your way through life
-    $ scripta ex<tab> -> scripta examples/
-    $ scripta examples/hello-world-minimal <tab> -> scripta examples/hello-world-minimal --name
-    # ...and so on
-
 
 Create new scripts
 ------------------
