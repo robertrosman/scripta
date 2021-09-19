@@ -1,0 +1,365 @@
+# The configurations that used for the recording, feel free to edit them
+config:
+
+  # Specify a command to be executed
+  # like `/bin/bash -l`, `ls`, or any other commands
+  # the default is bash for Linux
+  # or powershell.exe for Windows
+  command: zsh
+  
+  # Specify the current working directory path
+  # the default is the current working directory path
+  cwd: /Users/robert.rosman/Movies/scripta
+  
+  # Export additional ENV variables
+  env:
+    recording: true
+  
+  # Explicitly set the number of columns
+  # or use `auto` to take the current
+  # number of columns of your shell
+  cols: 80
+  
+  # Explicitly set the number of rows
+  # or use `auto` to take the current
+  # number of rows of your shell
+  rows: 15
+  
+  # Amount of times to repeat GIF
+  # If value is -1, play once
+  # If value is 0, loop indefinitely
+  # If value is a positive number, loop n times
+  repeat: 0
+  
+  # Quality
+  # 1 - 100
+  quality: 5
+  
+  # Delay between frames in ms
+  # If the value is `auto` use the actual recording delays
+  frameDelay: auto
+  
+  # Maximum delay between frames in ms
+  # Ignored if the `frameDelay` isn't set to `auto`
+  # Set to `auto` to prevent limiting the max idle time
+  maxIdleTime: 2000
+  
+  # The surrounding frame box
+  # The `type` can be null, window, floating, or solid`
+  # To hide the title use the value null
+  # Don't forget to add a backgroundColor style with a null as type
+  frameBox:
+    type: solid
+    title: null
+    style:
+      border: 0px black solid
+      boxShadow: none
+      margin: 1px
+  
+  # Add a watermark image to the rendered gif
+  # You need to specify an absolute path for
+  # the image on your machine or a URL, and you can also
+  # add your own CSS styles
+  watermark:
+    imagePath: null
+    style:
+      position: absolute
+      right: 15px
+      bottom: 15px
+      width: 100px
+      opacity: 0.9
+  
+  # Cursor style can be one of
+  # `block`, `underline`, or `bar`
+  cursorStyle: block
+  
+  # Font family
+  # You can use any font that is installed on your machine
+  # in CSS-like syntax
+  fontFamily: "Monaco, Lucida Console, Ubuntu Mono, Monospace"
+  
+  # The size of the font
+  fontSize: 12
+  
+  # The height of lines
+  lineHeight: 1
+  
+  # The spacing between letters
+  letterSpacing: 0
+  
+  # Theme
+  theme:
+    background: "transparent"
+    foreground: "#afafaf"
+    cursor: "#c7c7c7"
+    black: "#232628"
+    red: "#fc4384"
+    green: "#b3e33b"
+    yellow: "#ffa727"
+    blue: "#75dff2"
+    magenta: "#ae89fe"
+    cyan: "#708387"
+    white: "#d5d5d0"
+    brightBlack: "#626566"
+    brightRed: "#ff7fac"
+    brightGreen: "#c8ed71"
+    brightYellow: "#ebdf86"
+    brightBlue: "#75dff2"
+    brightMagenta: "#ae89fe"
+    brightCyan: "#b1c6ca"
+    brightWhite: "#f9f9f4"
+  
+# Records, feel free to edit them
+records:
+  - delay: 0
+    content: "\e[1m\e[7m%\e[27m\e[1m\e[0m                                                                               \r \r\e]7;file://SE-MAC-034.local/Users/robert.rosman/Movies/scripta\a\r\e[0m\e[27m\e[24m\e[J$ \e[K\e[?2004h"
+  - delay: 797
+    content: s
+  - delay: 192
+    content: "c"
+  - delay: 208
+    content: r
+  - delay: 224
+    content: i
+  - delay: 70
+    content: p
+  - delay: 57
+    content: t
+  - delay: 96
+    content: a
+  - delay: 553
+    content: "\e[?2004l\r\r\n"
+  - delay: 411
+    content: "\e[32m?\e[39m \e[1mPlease choose a script to run\e[22m\e[0m \e[0m\e[2m(Use arrow keys or type to search)\e[22m\r\n\e[36m❯ add-script\e[39m \r\n  examples/hello-world-choices-function \r\n  examples/hello-world-history \r\n  examples/hello-world-import \r\n  examples/hello-world-minimal \r\n  examples/hello-world-suggestions \r\n  examples/hello-world \r\n\e[2m(Move up and down to reveal more choices)\e[22m\e[8A\e[41D\e[66C"
+  - delay: 624
+    content: "\e[8B\e[2K\e[1A\e[2K\e[1A\e[2K\e[1A\e[2K\e[1A\e[2K\e[1A\e[2K\e[1A\e[2K\e[1A\e[2K\e[1A\e[2K\e[G\e[32m?\e[39m \e[1mPlease choose a script to run\e[22m\e[0m \e[0m\r\n  add-script \r\n\e[36m❯ examples/hello-world-choices-function\e[39m \r\n  examples/hello-world-history \r\n  examples/hello-world-import \r\n  examples/hello-world-minimal \r\n  examples/hello-world-suggestions \r\n  examples/hello-world \r\n\e[2m(Move up and down to reveal more choices)\e[22m\e[8A\e[41D\e[32C"
+  - delay: 178
+    content: "\e[8B\e[2K\e[1A\e[2K\e[1A\e[2K\e[1A\e[2K\e[1A\e[2K\e[1A\e[2K\e[1A\e[2K\e[1A\e[2K\e[1A\e[2K\e[G\e[32m?\e[39m \e[1mPlease choose a script to run\e[22m\e[0m \e[0m\r\n  add-script \r\n  examples/hello-world-choices-function \r\n\e[36m❯ examples/hello-world-history\e[39m \r\n  examples/hello-world-import \r\n  examples/hello-world-minimal \r\n  examples/hello-world-suggestions \r\n  examples/hello-world \r\n\e[2m(Move up and down to reveal more choices)\e[22m\e[8A\e[41D\e[32C"
+  - delay: 144
+    content: "\e[8B\e[2K\e[1A\e[2K\e[1A\e[2K\e[1A\e[2K\e[1A\e[2K\e[1A\e[2K\e[1A\e[2K\e[1A\e[2K\e[1A\e[2K\e[G\e[32m?\e[39m \e[1mPlease choose a script to run\e[22m\e[0m \e[0m\r\n  examples/hello-world-choices-function \r\n  examples/hello-world-history \r\n\e[36m❯ examples/hello-world-import\e[39m \r\n  examples/hello-world-minimal \r\n  examples/hello-world-suggestions \r\n  examples/hello-world \r\n  examples/ls \r\n\e[2m(Move up and down to reveal more choices)\e[22m\e[8A\e[41D\e[32C"
+  - delay: 152
+    content: "\e[8B\e[2K\e[1A\e[2K\e[1A\e[2K\e[1A\e[2K\e[1A\e[2K\e[1A\e[2K\e[1A\e[2K\e[1A\e[2K\e[1A\e[2K\e[G\e[32m?\e[39m \e[1mPlease choose a script to run\e[22m\e[0m \e[0m\r\n  examples/hello-world-history \r\n  examples/hello-world-import \r\n\e[36m❯ examples/hello-world-minimal\e[39m \r\n  examples/hello-world-suggestions \r\n  examples/hello-world \r\n  examples/ls \r\n  add-script \r\n\e[2m(Move up and down to reveal more choices)\e[22m\e[8A\e[41D\e[32C"
+  - delay: 134
+    content: "\e[8B\e[2K\e[1A\e[2K\e[1A\e[2K\e[1A\e[2K\e[1A\e[2K\e[1A\e[2K\e[1A\e[2K\e[1A\e[2K\e[1A\e[2K\e[G\e[32m?\e[39m \e[1mPlease choose a script to run\e[22m\e[0m \e[0m\r\n  examples/hello-world-import \r\n  examples/hello-world-minimal \r\n\e[36m❯ examples/hello-world-suggestions\e[39m \r\n  examples/hello-world \r\n  examples/ls \r\n  add-script \r\n  examples/hello-world-choices-function \r\n\e[2m(Move up and down to reveal more choices)\e[22m\e[8A\e[41D\e[32C"
+  - delay: 353
+    content: "\e[8B\e[2K\e[1A\e[2K\e[1A\e[2K\e[1A\e[2K\e[1A\e[2K\e[1A\e[2K\e[1A\e[2K\e[1A\e[2K\e[1A\e[2K\e[G\e[32m?\e[39m \e[1mPlease choose a script to run\e[22m\e[0m \e[0m\r\n  examples/hello-world-minimal \r\n  examples/hello-world-suggestions \r\n\e[36m❯ examples/hello-world\e[39m \r\n  examples/ls \r\n  add-script \r\n  examples/hello-world-choices-function \r\n  examples/hello-world-history \r\n\e[2m(Move up and down to reveal more choices)\e[22m\e[8A\e[41D\e[32C"
+  - delay: 434
+    content: "\e[8B\e[2K\e[1A\e[2K\e[1A\e[2K\e[1A\e[2K\e[1A\e[2K\e[1A\e[2K\e[1A\e[2K\e[1A\e[2K\e[1A\e[2K\e[G\e[32m?\e[39m \e[1mPlease choose a script to run\e[22m\e[0m \e[0m\e[36mexamples/hello-world\e[39m\e[52D\e[52C\r\n"
+  - delay: 6
+    content: "\e[32m?\e[39m \e[1mWho do you want to greet?\e[22m\e[0m \e[0m\e[28D\e[28C"
+  - delay: 595
+    content: "\e[2K\e[G\e[32m?\e[39m \e[1mWho do you want to greet?\e[22m\e[0m \e[0mR\e[29D\e[29C"
+  - delay: 146
+    content: "\e[2K\e[G\e[32m?\e[39m \e[1mWho do you want to greet?\e[22m\e[0m \e[0mRo\e[30D\e[30C"
+  - delay: 58
+    content: "\e[2K\e[G\e[32m?\e[39m \e[1mWho do you want to greet?\e[22m\e[0m \e[0mRob\e[31D\e[31C"
+  - delay: 157
+    content: "\e[2K\e[G\e[32m?\e[39m \e[1mWho do you want to greet?\e[22m\e[0m \e[0mRobe\e[32D\e[32C"
+  - delay: 65
+    content: "\e[2K\e[G\e[32m?\e[39m \e[1mWho do you want to greet?\e[22m\e[0m \e[0mRober\e[33D\e[33C"
+  - delay: 54
+    content: "\e[2K\e[G\e[32m?\e[39m \e[1mWho do you want to greet?\e[22m\e[0m \e[0mRobert\e[34D\e[34C"
+  - delay: 584
+    content: "\e[2K\e[G\e[32m?\e[39m \e[1mWho do you want to greet?\e[22m\e[0m \e[0m\e[36mRobert\e[39m\e[34D\e[34C\r\n\e[90mRunning the following script:\e[39m\r\n\e[90mscripta examples/hello-world \"Robert\"\e[39m\r\n\e[90m\e[39m\r\nHello Robert!\r\n"
+  - delay: 10
+    content: "\e[1m\e[7m%\e[27m\e[1m\e[0m                                                                               \r \r\e]7;file://SE-MAC-034.local/Users/robert.rosman/Movies/scripta\a\r\e[0m\e[27m\e[24m\e[J$ \e[K\e[?2004h"
+  - delay: 3820
+    content: "\e[7mscripta examples/hello-world \"Robert\"\e[27m\r\r\n\e[K"
+  - delay: 630
+    content: "\e[A\e[2C\e[27ms\e[27mc\e[27mr\e[27mi\e[27mp\e[27mt\e[27ma\e[27m \e[27me\e[27mx\e[27ma\e[27mm\e[27mp\e[27ml\e[27me\e[27ms\e[27m/\e[27mh\e[27me\e[27ml\e[27ml\e[27mo\e[27m-\e[27mw\e[27mo\e[27mr\e[27ml\e[27md\e[27m \e[27m\"\e[27mR\e[27mo\e[27mb\e[27me\e[27mr\e[27mt\e[27m\"\e[1B\r\e[K\e[A\e[39C"
+  - delay: 360
+    content: "\b \b"
+  - delay: 552
+    content: ' '
+  - delay: 270
+    content: R
+  - delay: 282
+    content: o
+  - delay: 80
+    content: s
+  - delay: 112
+    content: m
+  - delay: 48
+    content: a
+  - delay: 104
+    content: 'n'
+  - delay: 350
+    content: '"'
+  - delay: 258
+    content: "\e[?2004l\e[1B\r"
+  - delay: 405
+    content: "Hello Robert Rosman!\r\n"
+  - delay: 7
+    content: "\e[1m\e[7m%\e[27m\e[1m\e[0m                                                                               \r \r\e]7;file://SE-MAC-034.local/Users/robert.rosman/Movies/scripta\a\r\e[0m\e[27m\e[24m\e[J$ \e[K\e[?2004h"
+  - delay: 3196
+    content: scripta examples/hello-world "Robert Rosman"
+  - delay: 303
+    content: "\b \b"
+  - delay: 501
+    content: "\b \b"
+  - delay: 84
+    content: "\b \b"
+  - delay: 84
+    content: "\b \b"
+  - delay: 84
+    content: "\b \b"
+  - delay: 84
+    content: "\b \b"
+  - delay: 84
+    content: "\b \b"
+  - delay: 84
+    content: "\b"
+  - delay: 84
+    content: "\b \b"
+  - delay: 85
+    content: "\b \b"
+  - delay: 84
+    content: "\b \b"
+  - delay: 84
+    content: "\b \b"
+  - delay: 84
+    content: "\b \b"
+  - delay: 84
+    content: "\b \b"
+  - delay: 275
+    content: "\b \b"
+  - delay: 215
+    content: "\b"
+  - delay: 144
+    content: '-'
+  - delay: 384
+    content: h
+  - delay: 153
+    content: i
+  - delay: 119
+    content: s
+  - delay: 648
+    content: "tory\e[1m \e[0m"
+  - delay: 817
+    content: "\b\e[0m -"
+  - delay: 142
+    content: '-'
+  - delay: 121
+    content: h
+  - delay: 144
+    content: e
+  - delay: 104
+    content: l
+  - delay: 80
+    content: p
+  - delay: 224
+    content: "\e[?2004l\r\r\n"
+  - delay: 398
+    content: "Usage: scripta examples/hello-world-history [options] [name]\r\n\r\nArguments:\r\n  name             Who do you want to greet? (choices: \"Robert\", \"Roger\",\r\n                   \"John\", \"Johnny\", \"Maggie\", \"Cher\", \"Rodney\", \"Bobby\",\r\n                   \"Robin\", \"Rocky\")\r\n\r\nOptions:\r\n  --exaggerate     Want me to be veeery friendly?\r\n  --color <value>  Choose a good looking color (choices: \"default\", \"black\",\r\n                   \"red\", \"green\", \"yellow\", \"blue\", \"magenta\", \"cyan\",\r\n                   \"white\", \"grey\", \"redBright\", \"greenBright\", \"yellowBright\",\r\n                   \"blueBright\", \"magentaBright\", \"cyanBright\", \"whiteBright\")\r\n  -h, --help       display help for command\r\n\e[1m\e[7m%\e[27m\e[1m\e[0m                                                                               \r \r\e]7;file://SE-MAC-034.local/Users/robert.rosman/Movies/scripta\a\r\e[0m\e[27m\e[24m\e[J$ \e[K\e[?2004h"
+  - delay: 1310
+    content: scripta examples/hello-world-history --help
+  - delay: 943
+    content: "\b \b"
+  - delay: 199
+    content: "\b \b"
+  - delay: 161
+    content: "\b \b"
+  - delay: 224
+    content: "\b \b"
+  - delay: 376
+    content: "\b \b"
+  - delay: 391
+    content: "\b \b"
+  - delay: 1738
+    content: "\a\r\r\n\e[J--color       Cher          Maggie        Rocky         \r\n--exaggerate  John          Robert        Rodney        \r\nBobby         Johnny        Robin         Roger         \e[3A\e[0m\e[27m\e[24m\r\e[2Cscripta examples/hello-world-history\e[K\e[1C"
+  - delay: 1973
+    content: R
+  - delay: 250
+    content: o
+  - delay: 509
+    content: "\a\r\r\n\e[J\e[JRobert  Robin   Rocky   Rodney  Roger\e[A\e[0m\e[27m\e[24m\r\e[2Cscripta examples/hello-world-history Ro\e[K"
+  - delay: 967
+    content: "\abert"
+  - delay: 1133
+    content: "\b \b"
+  - delay: 176
+    content: "\b \b"
+  - delay: 111
+    content: "\b \b"
+  - delay: 693
+    content: "\a\r\r\n\e[J\e[JRobert  Robin\e[A\e[0m\e[27m\e[24m\r\e[2Cscripta examples/hello-world-history Rob\e[K"
+  - delay: 1969
+    content: b
+  - delay: 122
+    content: i
+  - delay: 80
+    content: e
+  - delay: 935
+    content: "\e[?2004l\r\r\n\e[J"
+  - delay: 405
+    content: "\e[?25l\e[32m?\e[39m \e[1mChoose a good looking color\e[22m\e[0m \e[0m\e[2m(Use arrow keys)\e[22m\r\n\e[36m❯ default\e[39m \r\n  black \r\n  red \r\n  green \r\n  yellow \r\n  blue \r\n  magenta \r\n\e[2m(Move up and down to reveal more choices)\e[22m\e[41D\e[41C"
+  - delay: 1402
+    content: "\e[2K\e[1A\e[2K\e[1A\e[2K\e[1A\e[2K\e[1A\e[2K\e[1A\e[2K\e[1A\e[2K\e[1A\e[2K\e[1A\e[2K\e[G\e[32m?\e[39m \e[1mChoose a good looking color\e[22m\e[0m \e[0m\e[36mdefault\e[39m\e[37D\e[37C\r\n\e[?25h\e[90mRunning the following script:\e[39m\r\n\e[90mscripta examples/hello-world-history \"Robbie\" --color \"default\"\e[39m\r\n\e[90m\e[39m\r\nHello Robbie!\r\n\e[?25h"
+  - delay: 7
+    content: "\e[1m\e[7m%\e[27m\e[1m\e[0m                                                                               \r \r\e]7;file://SE-MAC-034.local/Users/robert.rosman/Movies/scripta\a\r\e[0m\e[27m\e[24m\e[J$ \e[K\e[?2004h"
+  - delay: 1208
+    content: scripta examples/hello-world-history Robbie
+  - delay: 839
+    content: "\b \b"
+  - delay: 368
+    content: "\b \b"
+  - delay: 632
+    content: "\b \b"
+  - delay: 781
+    content: "\a\r\r\n\e[JRobbie  Robert  Robin\e[A\e[0m\e[27m\e[24m\r\e[2Cscripta examples/hello-world-history Rob\e[K"
+  - delay: 1426
+    content: "\abie"
+  - delay: 145
+    content: "\b\b\bert"
+  - delay: 379
+    content: "\b\b\bin \b"
+  - delay: 219
+    content: "\b\bbie"
+  - delay: 290
+    content: "\b\b\bert"
+  - delay: 392
+    content: "\b\b\bin \b"
+  - delay: 311
+    content: "\b\bbie"
+  - delay: 1426
+    content: ' '
+  - delay: 271
+    # content: "- \r\e[K"
+    content: "-"
+  - delay: 152
+    # content: "\r-e"
+    content: "-e"
+  - delay: 296
+    content: x
+  - delay: 692
+    # content: "aggerate"
+    content: "aggerate\e[1m \e[0m"
+  - delay: 1413
+    content: "\b\e[0m -"
+  - delay: 183
+    content: '-'
+  - delay: 351
+    content: c
+  - delay: 137
+    content: o
+  - delay: 160
+    content: l
+  - delay: 475
+    content: "or\e[1m \e[0m"
+  - delay: 915
+    content: "\a\b\e[0m \r\r\n\e[J\e[Jblack          cyanBright     grey           redBright      yellowBright\r\nblue           default        magenta        white          \r\nblueBright     green          magentaBright  whiteBright    \r\ncyan           greenBright    red            yellow         \e[4A\e[0m\e[27m\e[24m\e[6C\e[K\e[1C"
+    # content: "\a\b\e[0m \r\r\n\e[J\e[Jblack          cyanBright     grey           redBright      yellowBright\r\nblue           default        magenta        white          \r\nblueBright     green          magentaBright  whiteBright    \r\ncyan           greenBright    red            yellow         \e[5A\e[0m\e[27m\e[24m\r\e[2Cscripta examples/hello-world-history Robbie --exaggerate --color\e[K\e[1C"
+  - delay: 1442
+    content: r
+  - delay: 88
+    content: e
+  - delay: 167
+    content: d
+  - delay: 626
+    content: "\e[?2004l\r\r\n\e[J"
+  - delay: 414
+    content: "\e[38;5;196mHello my best friend Robbie, missed you sooo much!!!\e[39m\r\n"
+  - delay: 8
+    content: "\e[1m\e[7m%\e[27m\e[1m\e[0m                                                                               \r \r\e]7;file://SE-MAC-034.local/Users/robert.rosman/Movies/scripta\a\r\e[0m\e[27m\e[24m\e[J$ \e[K\e[?2004h"
+  - delay: 3008
+    content: " "
