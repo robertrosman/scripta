@@ -3,7 +3,7 @@ Scripta
 
 Manage and run your command line scripts like a boss. Scripta will help you write, remember and run your scripts.
 
-![Screencast demo](https://raw.githubusercontent.com/robertrosman/scripta/main/assets/screencast.gif)
+![Screencast demo](https://raw.githubusercontent.com/robertrosman/scripta/main/assets/screencast-min.gif)
 
 Declare options in your scripts and run interactively or with command line arguments. Tab completion, help messages, persistence and more works out of the box!
 
