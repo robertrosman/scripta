@@ -5,7 +5,7 @@ import { ArgumentParser } from './ArgumentParser.js';
 
 export class TabCompleter {
   static registerCompletions(argumentParser: ArgumentParser): void {
-    const completion = omelette('scriptacompletion')
+    const completion = omelette('scripta')
     completion.on('complete', (_, { fragment, before, reply, line }) => {
       reply(this.getSuggestions(argumentParser, line.toString(), fragment))
     });
