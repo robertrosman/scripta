@@ -1,7 +1,6 @@
 import stringArgv from 'string-argv'
 import { TabCompleter } from '../lib/TabCompleter'
 import { ArgumentParser } from '../lib/ArgumentParser'
-import { Script } from '../lib/Script'
 import { Command } from 'commander'
 
 const mockArgv = (args) => stringArgv(args, 'node', 'resolve-options.test.js')
@@ -95,21 +94,6 @@ describe('ArgumentParser', () => {
     expect((parser.program as any).options[0].long).toBe('--hello')
   })
 
-  test('parse runs callback if given', async () => {
-    const argv = mockArgv('test --test')
-    const callback = jest.fn()
-    const parser = new ArgumentParser()
-    parser.registerScript(new Script({
-      options: [{
-        name: 'test',
-        message: 'some basic bool flag'
-      }]
-    }), callback)
-
-    parser.parse(argv)
-
-    expect(callback).toHaveBeenCalledTimes(1)
-  })
 })
 
 describe('generateCommandCall', () => {

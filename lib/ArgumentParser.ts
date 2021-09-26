@@ -1,10 +1,9 @@
 import { paramCase } from 'change-case'
 import { Argument, Command, Option } from 'commander'
-import { Script } from './Script.js'
-import { OptionDefinition } from './ScriptDefinition'
+import { Script, OptionDefinition, ArgumentParser as IArgumentParser } from 'scripta'
 import { TabCompleter } from './TabCompleter.js'
 
-export class ArgumentParser {
+export class ArgumentParser implements IArgumentParser {
     program: Command
 
     constructor() {

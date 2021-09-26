@@ -1,10 +1,11 @@
 import('zx')
 import path from 'path'
 import fs from 'fs'
-import { Script } from './Script.js'
+import { Script } from 'scripta'
 import { getFilesRecursively, __dirname, nameifyScript, muteConsole, unmuteConsole } from './utils.js'
 import { ArgumentParser } from './ArgumentParser.js'
 import { Form } from './Form.js'
+import { Store } from './Store.js'
 import { pathToFileURL } from 'url'
 import { Command } from 'commander'
 
@@ -61,10 +62,15 @@ export class Runner {
         const generatedName = nameifyScript(path.join(this.scriptsPath, file))
         const url = pathToFileURL(path.join(this.scriptsPath, file))
         const importedScript = await import(url.href)
-        const script = (importedScript.default instanceof Script)
+        const script: Script = (importedScript.default instanceof Script)
           ? importedScript.default
           : new Script({ name: generatedName, ...importedScript })
-        script.extendContext({ __dirname })
+        script.setContext({ 
+          __dirname,
+          form: new Form(),
+          storeManager: new Store(),
+          argumentParser: this.argumentParser
+        })
         const givenName = script.name
         this.availableScripts[givenName] = (...args) => {
           unmuteConsole(true)
@@ -88,7 +94,7 @@ export class Runner {
         choices: Object.keys(availableScripts)
       }
     ]
-    const { script } = await Form.run(availableScriptsOptions, {})
+    const { script } = await (new Form()).run(availableScriptsOptions, {})
     return script
   }
 }

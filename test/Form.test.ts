@@ -2,12 +2,13 @@ import { Form } from '../lib/Form'
 import mockInquirer from 'mock-inquirer'
 
 describe('Form', () => {
+  const form = new Form()
   test('asks user for answer if not provided by argv', async () => {
     mockInquirer([{
       second: 'mock answer'
     }])
 
-    const answers: any = await Form.run([
+    const answers: any = await form.run([
       {
         name: 'first',
         type: 'input',
@@ -34,7 +35,7 @@ describe('Form', () => {
       second: 'mock answer'
     }])
 
-    const answers: any = await Form.run([
+    const answers: any = await form.run([
       {
         name: 'first',
         type: 'input',
@@ -58,7 +59,7 @@ describe('Form', () => {
       second: 'mock answer'
     }])
 
-    const answers: any = await Form.run([
+    const answers: any = await form.run([
       {
         name: 'verbose',
         type: 'confirm',
@@ -91,7 +92,7 @@ describe('Form', () => {
         source: async () => ["test"]
       },
     ]
-    Form.generateAutocompleteSource(questions)
+    form.generateAutocompleteSource(questions)
 
     const matchedChoices1 = await questions[0].source({}, "match")
     expect(matchedChoices1.length).toBe(2)
