@@ -1,20 +1,20 @@
 {
-  "name": "scripta",
-  "version": "1.1.0",
-  "description": "Manage and run your javascript command line scripts like a boss",
+  "name": "scripta-core",
+  "version": "1.2.0",
+  "description": "The engine behind scripta",
   "keywords": [
     "script runner",
     "command line",
     "options parser",
     "script manager"
   ],
-  "homepage": "https://github.com/robertrosman/scripta",
+  "homepage": "https://github.com/robertrosman/scripta-core",
   "bugs": {
-    "url": "https://github.com/robertrosman/scripta/issues"
+    "url": "https://github.com/robertrosman/scripta-core/issues"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/robertrosman/scripta.git"
+    "url": "https://github.com/robertrosman/scripta-core.git"
   },
   "author": "Robert Rosman <robertrosman@gmx.com>",
   "private": false,
@@ -43,12 +43,11 @@
     "lint": "standard",
     "lint:fix": "standard --fix",
     "prepublishOnly": "npm run test && npm run build && npm login",
-    "postinstall": "node ./dist/cli.js --cleanup-shell-init-file && node ./dist/cli.js --setup-shell-init-file"
+    "postinstall": "#cp -Rn ./scripts ~/.scripta/ && cp -n ./dist/boilerplate.js ~/.scripta/ && node ./dist/cli.js --cleanup-shell-init-file && node ./dist/cli.js --setup-shell-init-file"
   },
   "license": "ISC",
   "type": "module",
   "dependencies": {
-    "@types/inquirer": "^7.3.3",
     "change-case": "^4.1.2",
     "commander": "^8.1.0",
     "console.mute": "github:robertrosman/console.mute",
@@ -58,6 +57,7 @@
     "inquirer-autocomplete-prompt": "^1.4.0",
     "lodash": "^4.17.21",
     "omelette": "^0.4.16",
+    "scripta": "^1.2.0",
     "string-argv": "^0.3.1",
     "zx": "^3.1.0"
   },
@@ -66,15 +66,17 @@
     "@babel/plugin-transform-modules-commonjs": "^7.15.0",
     "@babel/preset-env": "^7.15.0",
     "@babel/preset-typescript": "^7.15.0",
+    "@types/inquirer": "^7.3.3",
     "@types/jest": "^27.0.1",
     "@types/node": "^16.9.1",
     "@types/omelette": "^0.4.1",
     "babel-jest": "^27.1.0",
     "jest": "^27.0.0",
+    "jest-cli": "^27.2.1",
     "mock-inquirer": "github:robertrosman/mock-inquirer",
     "standard": "^16.0.3",
     "ts-jest": "^27.0.5",
     "ts-node": "^10.2.1",
-    "typescript": "^4.4.2"
+    "typescript": "^4.4.3"
   }
 }
