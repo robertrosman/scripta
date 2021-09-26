@@ -1,9 +1,12 @@
 import path from 'path'
 import fs from 'fs'
+import os from 'os'
 import dirname from 'es-dirname'
 import('console.mute')
 
 export const __dirname = path.join(dirname(), '..', '..')
+export const installPath = __dirname
+export const configPath = path.join(os.homedir(), '.scripta')
 
 export const scriptsPath = path.join(__dirname, 'scripts')
 

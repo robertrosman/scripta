@@ -2,7 +2,7 @@ import('zx')
 import path from 'path'
 import fs from 'fs'
 import { Script } from 'scripta'
-import { getFilesRecursively, __dirname, nameifyScript, muteConsole, unmuteConsole } from './utils.js'
+import { getFilesRecursively, __dirname, installPath, configPath, nameifyScript, muteConsole, unmuteConsole } from './utils.js'
 import { ArgumentParser } from './ArgumentParser.js'
 import { Form } from './Form.js'
 import { Store } from './Store.js'
@@ -51,7 +51,8 @@ export class Runner {
       process.argv[2] = nameifyScript(absolutePath)
     }
     else {
-      files.push(...getFilesRecursively(this.scriptsPath))
+      files.push(...getFilesRecursively(path.join(installPath, 'scripts')))
+      files.push(...getFilesRecursively(path.join(configPath, 'scripts')))
     }
     return files
   }
