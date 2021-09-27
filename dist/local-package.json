@@ -1,0 +1,11 @@
+{
+    "name": "my-scripts",
+    "version": "1.0.0",
+    "description": "My scripta scripts",
+    "scripts": {},
+    "license": "ISC",
+    "type": "module",
+    "dependencies": {
+        "scripta-lite": "^1.2.0"
+    }
+}

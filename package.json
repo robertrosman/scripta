@@ -43,7 +43,7 @@
     "lint": "standard",
     "lint:fix": "standard --fix",
     "prepublishOnly": "npm run test && npm run build && npm login",
-    "postinstall": "#cp -Rn ./scripts ~/.scripta/ && cp -n ./dist/boilerplate.js ~/.scripta/ && node ./dist/cli.js --cleanup-shell-init-file && node ./dist/cli.js --setup-shell-init-file"
+    "postinstall": "./dist/postinstall.sh"
   },
   "license": "ISC",
   "type": "module",
