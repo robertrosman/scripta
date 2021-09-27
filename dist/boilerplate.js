@@ -1,6 +1,6 @@
 #!/usr/bin/env scripta
 // HINT: You can always sneak peak at the other scripts for some inspiration :)
-import { Script } from 'scripta'
+import { Script } from 'scripta-lite'
 
 // Declare any options you like. Format as inquirer.js questions.
 export default new Script({

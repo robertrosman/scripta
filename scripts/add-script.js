@@ -1,5 +1,5 @@
 #!/usr/bin/env scripta
-import { Script } from 'scripta'
+import { Script } from 'scripta-lite'
 import fs from 'fs'
 import path from 'path'
 import { paramCase } from 'change-case'

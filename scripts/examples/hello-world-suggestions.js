@@ -1,5 +1,5 @@
 #!/usr/bin/env scripta
-import { Script } from 'scripta'
+import { Script } from 'scripta-lite'
 
 export default new Script({
   name: 'examples/hello-world-suggestions',
