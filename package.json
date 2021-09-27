@@ -1,20 +1,20 @@
 {
-  "name": "scripta-core",
+  "name": "scripta",
   "version": "1.2.0",
-  "description": "The engine behind scripta",
+  "description": "Manage and run your javascript command line scripts like a boss",
   "keywords": [
     "script runner",
     "command line",
     "options parser",
     "script manager"
   ],
-  "homepage": "https://github.com/robertrosman/scripta-core",
+  "homepage": "https://github.com/robertrosman/scripta",
   "bugs": {
-    "url": "https://github.com/robertrosman/scripta-core/issues"
+    "url": "https://github.com/robertrosman/scripta/issues"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/robertrosman/scripta-core.git"
+    "url": "https://github.com/robertrosman/scripta.git"
   },
   "author": "Robert Rosman <robertrosman@gmx.com>",
   "private": false,
@@ -57,7 +57,7 @@
     "inquirer-autocomplete-prompt": "^1.4.0",
     "lodash": "^4.17.21",
     "omelette": "^0.4.16",
-    "scripta": "^1.2.0",
+    "scripta-lite": "^1.2.0",
     "string-argv": "^0.3.1",
     "zx": "^3.1.0"
   },
