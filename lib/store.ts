@@ -2,7 +2,7 @@ import fs from 'fs'
 import path from 'path'
 import _ from 'lodash'
 import { __dirname } from './utils.js'
-import { Store as IStore } from 'scripta'
+import { Store as IStore } from 'scripta-lite'
 
 const storeFilename = 'store.json'
 const filename = path.join(__dirname, storeFilename)

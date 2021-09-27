@@ -1,13 +1,20 @@
 import('zx')
 import path from 'path'
 import fs from 'fs'
-import { Script } from 'scripta'
+import { Script } from 'scripta-lite'
 import { getFilesRecursively, __dirname, installPath, configPath, nameifyScript, muteConsole, unmuteConsole } from './utils.js'
 import { ArgumentParser } from './ArgumentParser.js'
 import { Form } from './Form.js'
 import { Store } from './Store.js'
 import { pathToFileURL } from 'url'
 import { Command } from 'commander'
+
+interface ScriptPath {
+  absolute: string
+  base: string
+  relative: string
+  name: string
+}
 
 export class Runner {
   availableScripts: object
@@ -17,7 +24,7 @@ export class Runner {
   constructor() {
     this.availableScripts = {}
     this.argumentParser = new ArgumentParser()
-    this.scriptsPath = path.join(__dirname, 'scripts')
+    this.scriptsPath = path.join(configPath, 'scripts')
   }
 
   async run() {
@@ -44,30 +51,46 @@ export class Runner {
   }
 
   private getFileList() {
-    const files = []
+    const files: ScriptPath[] = []
     if (process.argv[2] && fs.existsSync(process.argv[2]) && fs.statSync(process.argv[2])?.isFile()) {
-      const absolutePath = path.resolve(process.argv[2])
-      files.push(path.relative(this.scriptsPath, absolutePath))
-      process.argv[2] = nameifyScript(absolutePath)
+      const absolute = path.resolve(process.argv[2])
+      const relative = path.relative(this.scriptsPath, absolute)
+      files.push({
+        absolute,
+        base: this.scriptsPath,
+        relative,
+        name: nameifyScript(relative)
+      })
+      process.argv[2] = nameifyScript(relative)
     }
     else {
-      files.push(...getFilesRecursively(path.join(installPath, 'scripts')))
-      files.push(...getFilesRecursively(path.join(configPath, 'scripts')))
+      files.push(...this.getScriptFilesInFolder(path.join(installPath, 'scripts')))
+      files.push(...this.getScriptFilesInFolder(path.join(configPath, 'scripts')))
     }
     return files
   }
 
-  private async setupScripts(files: string[]) {
+  private getScriptFilesInFolder(base: string): ScriptPath[] {
+    return getFilesRecursively(base).map(relative => ({
+      absolute: path.join(base, relative),
+      base,
+      relative,
+      name: nameifyScript(relative)
+    }))
+  }
+
+  private async setupScripts(files: ScriptPath[]) {
     for (const file of files) {
       try {
-        const generatedName = nameifyScript(path.join(this.scriptsPath, file))
-        const url = pathToFileURL(path.join(this.scriptsPath, file))
+        const url = pathToFileURL(file.absolute)
         const importedScript = await import(url.href)
-        const script: Script = (importedScript.default instanceof Script)
-          ? importedScript.default
-          : new Script({ name: generatedName, ...importedScript })
+        const script: Script = importedScript.default === undefined
+          ? new Script({ name: file.name, ...importedScript })
+          : importedScript.default as Script
         script.setContext({ 
           __dirname,
+          installPath,
+          configPath,
           form: new Form(),
           storeManager: new Store(),
           argumentParser: this.argumentParser

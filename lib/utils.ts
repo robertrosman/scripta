@@ -36,8 +36,6 @@ export const getFilesRecursively = (basePath: string, relativePath?: string) => 
 }
 
 export const nameifyScript = (filename) => {
-  const absolutePath = path.resolve(filename)
-  const relativeToScriptsFolder = path.join(path.relative(scriptsPath, absolutePath))
-  const withoutExtension = relativeToScriptsFolder.replace(/\.\w+$/, '')
+  const withoutExtension = filename.replace(/\.\w+$/, '')
   return withoutExtension
 }

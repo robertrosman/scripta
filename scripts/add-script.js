@@ -1,6 +1,6 @@
+#!/usr/bin/env scripta
 import { Script } from 'scripta'
 import fs from 'fs'
-import { constants } from 'fs'
 import path from 'path'
 import { paramCase } from 'change-case'
 
@@ -25,14 +25,18 @@ export default new Script({
     }
   ],
 
-  command: async ({ name, editor }, { __dirname }) => {
+  command: async ({ name, editor }, { installPath, configPath }) => {
     const filename = `${nameifyScript(name)}.js`
-    const source = path.join(__dirname, 'boilerplate.js')
-    const destination = path.join(__dirname, 'scripts', filename)
+    const source = path.join(installPath, 'dist', 'boilerplate.js')
+    const destination = path.join(configPath, 'scripts', filename)
+    const folder = path.dirname(destination)
     if (fs.existsSync(destination)) {
       console.log('Script already exists, opening existing script')
     }
     else {
+      if (!fs.existsSync(folder)) {
+        fs.mkdirSync(folder, { recursive: true})
+      }
       const buffer = await fs.promises.readFile(source)
       const newBody = buffer.toString().replace('__SCRIPT_NAME__', nameifyScript(name))
       await fs.promises.writeFile(destination, newBody)

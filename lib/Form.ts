@@ -2,7 +2,7 @@ import inquirer, { Answers } from 'inquirer'
 import InquirerAutocompletePrompt from 'inquirer-autocomplete-prompt'
 inquirer.registerPrompt('autocomplete', InquirerAutocompletePrompt)
 import fuzzy from 'fuzzy'
-import { OptionDefinition, Form as IForm } from 'scripta'
+import { OptionDefinition, Form as IForm } from 'scripta-lite'
 
 export class Form implements IForm {
   async run(questions: OptionDefinition[], answers = {}): Promise<Answers> {
