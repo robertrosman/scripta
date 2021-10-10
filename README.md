@@ -60,7 +60,7 @@ So far we haven't really done anything fancy, just a simple "Hello world" script
         options: [
             {
                 name: 'name',
-                type: 'input',
+                type: 'text',
                 message: 'Who do you want to greet?'
             }
         ],
@@ -172,7 +172,7 @@ Sometimes you might want to use data from the store when you generate your optio
 
         {
             name: 'name',
-            type: 'input',
+            type: 'text',
             message: 'Who do you want to greet?',
             when: () => options?.suggestions !== true
         },

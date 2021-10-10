@@ -2,6 +2,7 @@ import stringArgv from 'string-argv'
 import { TabCompleter } from '../lib/TabCompleter'
 import { ArgumentParser } from '../lib/ArgumentParser'
 import { Command } from 'commander'
+import { OptionDefinition } from '../lib/OptionDefinition'
 
 const mockArgv = (args) => stringArgv(args, 'node', 'resolve-options.test.js')
 
@@ -55,7 +56,7 @@ describe('ArgumentParser', () => {
 
     const options = parseOptions(argv, [{
       name: 'hello',
-      type: 'input'
+      type: 'text'
     }])
 
     expect(options.hello).toBe('world')
@@ -81,7 +82,7 @@ describe('ArgumentParser', () => {
     parser.addOptions([
       {
         name: 'hello',
-        type: 'input'
+        type: 'text'
       },
       {
         name: 'onlyInForm',
@@ -98,7 +99,7 @@ describe('ArgumentParser', () => {
 
 describe('generateCommandCall', () => {
   test('returns string with given argument bool value', async () => {
-    const questions = [{
+    const questions: OptionDefinition[] = [{
       name: 'testFlag',
       type: 'confirm'
     }]
@@ -110,7 +111,7 @@ describe('generateCommandCall', () => {
   })
 
   test('skips false bool arguments', async () => {
-    const questions = [{
+    const questions: OptionDefinition[] = [{
       name: 'test',
       type: 'confirm'
     }]
@@ -122,9 +123,9 @@ describe('generateCommandCall', () => {
   })
 
   test('returns string with given argument string value', async () => {
-    const questions = [{
+    const questions: OptionDefinition[] = [{
       name: 'test',
-      type: 'input'
+      type: 'text'
     }]
     const answers = { test: '"that\'s" right' }
 
@@ -136,13 +137,13 @@ describe('generateCommandCall', () => {
   })
 
   test('returns string without option flag for given positional argument string value', async () => {
-    const questions = [{
+    const questions: OptionDefinition[] = [{
       name: 'diggingIt',
       type: 'confirm'
     },
     {
       name: 'hipLevel',
-      type: 'input',
+      type: 'text',
       positionalArgument: true
     }]
     const answers = { 
@@ -156,9 +157,9 @@ describe('generateCommandCall', () => {
   })
 
   test('skip arguments if formOnly is true', async () => {
-    const questions = [{
+    const questions: OptionDefinition[] = [{
       name: 'test',
-      type: 'input',
+      type: 'text',
       formOnly: true
     }]
     const answers = { test: '"that\'s" right' }

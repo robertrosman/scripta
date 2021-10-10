@@ -1,5 +1,5 @@
 #!/usr/bin/env scripta
-import { Script } from 'scripta-lite'
+import { Script } from 'scripta'
 
 export default new Script({
   name: 'examples/hello-world-suggestions',
@@ -14,7 +14,7 @@ export default new Script({
 
     {
       name: 'name',
-      type: 'input',
+      type: 'text',
       message: 'Who do you want to greet?',
       when: () => options.suggestions !== true
     },

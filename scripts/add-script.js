@@ -1,5 +1,5 @@
 #!/usr/bin/env scripta
-import { Script } from 'scripta-lite'
+import { Script } from 'scripta'
 import fs from 'fs'
 import path from 'path'
 import { paramCase } from 'change-case'
@@ -12,13 +12,13 @@ export default new Script({
   options: [
     {
       name: 'name',
-      type: 'input',
+      type: 'text',
       message: 'Please enter the name of the new script',
       positionalArgument: true
     },
     {
       name: 'editor',
-      type: 'input',
+      type: 'text',
       message: 'Please enter your favorite editor command',
       // storeDefault: true
       setupOnce: true

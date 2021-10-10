@@ -1,5 +1,5 @@
 #!/usr/bin/env scripta
-import { Script } from 'scripta-lite'
+import { Script } from 'scripta'
 
 export default new Script({
   name: 'examples/hello-world-history',
@@ -10,9 +10,15 @@ export default new Script({
       type: 'autocomplete',
       message: 'Who do you want to greet?',
       choices: store.history,
-      suggestOnly: true,
-      validate: (val) => val && val.length > 0,
+      suggestOnly: false,
+      // validate: (val) => !!val && store.history.includes(val) ? true : 'Please choose one of the available choices',
       positionalArgument: true
+    },
+    {
+      name: 'exaggerate',
+      type: 'text',
+      message: 'asafsd',
+      validate: () => false
     },
     {
       name: 'exaggerate',
@@ -22,7 +28,7 @@ export default new Script({
     },
     {
       name: 'color',
-      type: 'list',
+      type: 'autocomplete',
       message: 'Choose a good looking color',
       choices: [ 'default', 'black', 'red', 'green', 'yellow', 'blue', 'magenta', 'cyan', 'white', 'grey', 'redBright', 'greenBright', 'yellowBright', 'blueBright', 'magentaBright', 'cyanBright', 'whiteBright' ],
       // when: () => chalk.supportsColor,
@@ -35,7 +41,7 @@ export default new Script({
   },
 
   command: async ({ name, exaggerate, color }, { store }) => {
-    if (!store.history.includes(name)) store.history.push(name)
+    if (!!name && !store.history.includes(name)) store.history.push(name)
     const msg = exaggerate ? `Hello my best friend ${name}, missed you sooo much!!!` : `Hello ${name}!`
     if (!color || color === 'default') {
       console.log(msg)

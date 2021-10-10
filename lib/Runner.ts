@@ -1,7 +1,7 @@
 import('zx')
 import path from 'path'
 import fs from 'fs'
-import { Script } from 'scripta-lite'
+import { Script } from './Script.js'
 import { getFilesRecursively, __dirname, installPath, configPath, nameifyScript, muteConsole, unmuteConsole } from './utils.js'
 import { ArgumentParser } from './ArgumentParser.js'
 import { Form } from './Form.js'
@@ -46,6 +46,7 @@ export class Runner {
       } else {
         unmuteConsole(true)
         console.error(err)
+        process.exit(err.exitCode)
       }
     }
   }
@@ -91,7 +92,6 @@ export class Runner {
           __dirname,
           installPath,
           configPath,
-          form: new Form(),
           storeManager: new Store(),
           argumentParser: this.argumentParser
         })
@@ -118,7 +118,7 @@ export class Runner {
         choices: Object.keys(availableScripts)
       }
     ]
-    const { script } = await (new Form()).run(availableScriptsOptions, {})
+    const { script } = await (new Form(availableScriptsOptions, {})).run()
     return script
   }
 }

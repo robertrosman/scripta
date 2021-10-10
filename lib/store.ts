@@ -1,11 +1,10 @@
 import fs from 'fs'
 import path from 'path'
 import _ from 'lodash'
-import { __dirname } from './utils.js'
-import { Store as IStore } from 'scripta-lite'
+import { configPath } from './utils.js'
 
 const storeFilename = 'store.json'
-const filename = path.join(__dirname, storeFilename)
+const filename = path.join(configPath, storeFilename)
 
 const readStore = () => {
   try {
@@ -26,7 +25,7 @@ const saveStore = (data) => {
   fs.writeFileSync(filename, json, { encoding: 'utf8' })
 }
 
-export class Store implements IStore {
+export class Store {
   private static _cache: object
 
   static get cache() {

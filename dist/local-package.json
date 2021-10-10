@@ -6,6 +6,6 @@
     "license": "ISC",
     "type": "module",
     "dependencies": {
-        "scripta-lite": "^1.2.0"
+        "scripta": "^1.2.0"
     }
 }

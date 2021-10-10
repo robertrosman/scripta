@@ -1,5 +1,5 @@
 #!/usr/bin/env scripta
-import { Script } from 'scripta-lite'
+import { Script } from 'scripta'
 import helloWorld from './hello-world.js'
 
 export default new Script({

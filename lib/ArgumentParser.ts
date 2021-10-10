@@ -1,9 +1,10 @@
 import { paramCase } from 'change-case'
 import { Argument, Command, Option } from 'commander'
-import { Script, OptionDefinition, ArgumentParser as IArgumentParser } from 'scripta-lite'
+import { Script } from './Script.js'
+import { OptionDefinition } from './OptionDefinition.js'
 import { TabCompleter } from './TabCompleter.js'
 
-export class ArgumentParser implements IArgumentParser {
+export class ArgumentParser {
     program: Command
 
     constructor() {
@@ -105,6 +106,6 @@ export class ArgumentParser implements IArgumentParser {
     }
 
     wantValue(option) {
-        return ['input', 'list', 'rawList', 'password', 'autocomplete'].includes(option.type)
+        return ['input', 'text', 'list', 'rawList', 'password', 'autocomplete'].includes(option.type)
     }
 }

@@ -1,5 +1,5 @@
 #!/usr/bin/env scripta
-import { Script } from 'scripta-lite'
+import { Script } from 'scripta'
 
 export default new Script({
   name: 'examples/hello-world-choices-function',
@@ -7,7 +7,7 @@ export default new Script({
   options: (store) => [
     {
       name: 'include',
-      type: 'input',
+      type: 'text',
       message: 'Who do you want to include in the suggestions?'
     },
     {
